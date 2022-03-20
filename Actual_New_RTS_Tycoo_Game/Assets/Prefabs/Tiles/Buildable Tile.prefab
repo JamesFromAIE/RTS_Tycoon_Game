@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-1255577245867215078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239213239420167123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09e85e373a17d9b4d81fd7ff30b247d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderer: {fileID: 734770154964386310}
+  _isBuildable: 1
+  OccupiedStructure: {fileID: 0}
+  _baseMaterial: {fileID: 2100000, guid: 904b94629d29c2843aba97b5e21bf859, type: 2}
+  _offsetMaterial: {fileID: 2100000, guid: 41147bbf8e3f5974685bbec62881d42a, type: 2}
+  _hoverMaterial: {fileID: 2100000, guid: 24c53ab0dc492254aa9f057c1dff041e, type: 2}
+--- !u!1001 &4388472272238435945
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3302384994654485946, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_Name
+      value: Buildable Tile
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+--- !u!1 &1239213239420167123 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3302384994654485946, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+  m_PrefabInstance: {fileID: 4388472272238435945}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &734770154964386310 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3950943129260678255, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+  m_PrefabInstance: {fileID: 4388472272238435945}
+  m_PrefabAsset: {fileID: 0}
