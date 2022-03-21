@@ -7,6 +7,7 @@ public class MoveCam : MonoBehaviour
     public static MoveCam Instance;
 
     [SerializeField] float _buffer;
+    [SerializeField] float _distance;
     Camera _cam;
 
     private void Awake()
@@ -23,40 +24,42 @@ public class MoveCam : MonoBehaviour
     public void SetOrthoCamPosition()
     {
         var (center, size) = CalculateOrthoSize();
-        _cam.transform.position = center;
+        _cam.transform.position = center - (_cam.transform.forward * 30);
         _cam.orthographicSize = size;
+
     }
 
-    private (Vector3 center, float size) CalculateOrthoSize()
+    private List<Vector3> GrabCornerPositions()
     {
-        var bounds = new Bounds();
-        var tileColliders = new List<Collider>();
-        
+        var tilePositions = new List<Vector3>();
         var cornerTiles = GridManager.Instance.cornerTiles;
 
         foreach (Vector2Int tilePos in cornerTiles)
         {
             var tile = GridManager.Instance.GetStaticTileAtPosition(new Vector3Int(tilePos.x, 0, tilePos.y));
-            var tileCol = tile.GetComponent<Collider>();
-            tileColliders.Add(tileCol);
+            tilePositions.Add(tile.transform.position);
         }
 
-        foreach(var col in tileColliders)
-        {
-            var colToCam = _cam.WorldToScreenPoint(col.transform.position);
-            var camToCol = _cam.ScreenToWorldPoint(colToCam);
+        return tilePositions;
+    }
 
-            bounds.Encapsulate(camToCol);
-        }
+    private (Vector3 center, float size) CalculateOrthoSize()
+    {
+        var bounds = new Bounds();
+        var v3Corners = GrabCornerPositions();
+
+        foreach (var point in v3Corners) bounds.Encapsulate(point);
 
         bounds.Expand(_buffer);
 
-        var vertical = bounds.size.y;
+        var vertical = bounds.size.z;
         var horizontal = bounds.size.x * _cam.pixelHeight / _cam.pixelWidth;
 
         var size = Mathf.Max(horizontal, vertical) * 0.5f;
-        var center = bounds.center + new Vector3(0, 0, -10);
+        var center = bounds.center;
 
         return (center, size);
     }
+
+    
 }
