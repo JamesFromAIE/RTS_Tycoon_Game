@@ -26,8 +26,8 @@ public class GameManager : MonoBehaviour
                 GridManager.Instance.GenerateGrid();
                 break;
             case GameStates.GameStopped:
-                StructureManager.Instance.SpawnBuilding();
-                StructureManager.Instance.SpawnLandmark();
+                //StructureManager.Instance.SpawnBuilding();
+                //StructureManager.Instance.SpawnLandmark();
                 break;
             case GameStates.GameResumed:
                 break;

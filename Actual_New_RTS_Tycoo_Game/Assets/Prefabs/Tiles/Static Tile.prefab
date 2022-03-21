@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 356420279b3f8384f98eb8e4c50c14b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseMaterial: {fileID: 2100000, guid: 904b94629d29c2843aba97b5e21bf859, type: 2}
-  _offsetMaterial: {fileID: 2100000, guid: 41147bbf8e3f5974685bbec62881d42a, type: 2}
-  _hoverMaterial: {fileID: 2100000, guid: 24c53ab0dc492254aa9f057c1dff041e, type: 2}
   _renderer: {fileID: 8500141178775275634}
+  _isBuildable: 0
+  OccupiedStructure: {fileID: 0}
 --- !u!1001 &4837429542971266077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -70,6 +69,10 @@ PrefabInstance:
     - target: {fileID: 3302384994654485946, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
       propertyPath: m_Name
       value: Static Tile
+      objectReference: {fileID: 0}
+    - target: {fileID: 3302384994654485946, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3950943129260678255, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
       propertyPath: m_Materials.Array.data[0]

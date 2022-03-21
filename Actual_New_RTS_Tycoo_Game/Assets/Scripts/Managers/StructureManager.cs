@@ -25,11 +25,32 @@ public class StructureManager : MonoBehaviour
             var randomPrefab = GetRandomStructure<BuildingBase>(StructureType.Building);
             var spawnedBuilding = Instantiate(randomPrefab);
             var dimensions = spawnedBuilding.XZDimensions;
-            var randomSpawnTile = GridManager.Instance.GetStructureSpawnTile(dimensions);
+            var randomSpawnTile = GridManager.Instance.GetRandomStructureSpawnTile(dimensions);
 
             randomSpawnTile.SetStructure(spawnedBuilding);
 
         }
+    }
+
+    public void SpawnBuildingOnTile(Tile tile)
+    {
+        if (!tile) return;
+
+        var randomPrefab = GetRandomStructure<StructureBase>(StructureType.Building);
+        
+        var dimensions = randomPrefab.XZDimensions;
+
+        if (GridManager.Instance.IsTileBuildable(tile, dimensions))
+        {
+            var spawnedStructure = Instantiate(randomPrefab);
+            tile.SetStructure(spawnedStructure);
+        }
+        else
+        {
+            //var structure = tile.OccupiedStructure;
+            Debug.Log("Cannot Build Structure HERE!!!");
+        }
+        
     }
 
     public void SpawnLandmark()
@@ -41,7 +62,7 @@ public class StructureManager : MonoBehaviour
             var randomPrefab = GetRandomStructure<LandmarkBase>(StructureType.Landmark);
             var spawnedLankmark = Instantiate(randomPrefab);
             var dimensions = spawnedLankmark.XZDimensions;
-            var randomSpawnTile = GridManager.Instance.GetStructureSpawnTile(dimensions);
+            var randomSpawnTile = GridManager.Instance.GetRandomStructureSpawnTile(dimensions);
 
             randomSpawnTile.SetStructure(spawnedLankmark);
         }
