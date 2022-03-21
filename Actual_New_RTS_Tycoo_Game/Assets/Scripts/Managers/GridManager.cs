@@ -15,7 +15,8 @@ public class GridManager : MonoBehaviour
     [SerializeField] LayerMask _tileLayer;
 
     private Dictionary<Vector3Int, Tile> _tiles;
-    private List<Vector2Int> cornerTiles;
+    private Dictionary<Vector3Int, Tile> _staticTiles;
+    public List<Vector2Int> cornerTiles { get; private set; }
 
     void Awake()
     {
@@ -45,6 +46,7 @@ public class GridManager : MonoBehaviour
     public void GenerateGrid()
     {
         _tiles = new Dictionary<Vector3Int, Tile>();
+        _staticTiles = new Dictionary<Vector3Int, Tile>();
         cornerTiles = new List<Vector2Int>();
         for (int x = 0; x < _width; x++)
         {
@@ -185,7 +187,7 @@ public class GridManager : MonoBehaviour
 
         spawnedTile.transform.parent = transform;
 
-        //_tiles[new Vector3Int(x, 0, z)] = spawnedTile;
+        _staticTiles[new Vector3Int(x, 0, z)] = spawnedTile;
     }
 
     public Tile GetRandomStructureSpawnTile(Vector2[] dimensions)
@@ -246,10 +248,12 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
-    public List<Tile> CornerTilesList()
+    public Tile GetStaticTileAtPosition(Vector3Int pos)
     {
-        var list = new List<Tile>();
-
-        return list;
+        if (_staticTiles.TryGetValue(pos, out var tile))
+        {
+            return tile;
+        }
+        return null;
     }
 }

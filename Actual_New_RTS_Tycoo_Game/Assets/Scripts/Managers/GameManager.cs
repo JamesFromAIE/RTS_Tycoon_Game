@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
                 GridManager.Instance.GenerateGrid();
                 break;
             case GameStates.GameStopped:
+                MoveCam.Instance.SetOrthoCamPosition();
                 //StructureManager.Instance.SpawnBuilding();
                 //StructureManager.Instance.SpawnLandmark();
                 break;
