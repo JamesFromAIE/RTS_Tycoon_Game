@@ -15,6 +15,12 @@ public abstract class Tile : MonoBehaviour
         
     }
 
+    public void SetEmptyStructure(StructureBase structure)
+    {
+        var offset = structure.transform.position;
+        structure.transform.position = transform.position + offset;
+    }
+
     public void SetStructure(StructureBase structure)
     {
         if (structure.OccupiedTile != null) structure.OccupiedTile.OccupiedStructure = null;

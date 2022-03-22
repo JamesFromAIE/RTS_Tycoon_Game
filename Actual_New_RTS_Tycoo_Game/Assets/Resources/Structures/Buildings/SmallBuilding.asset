@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4102f840985b2e243bcada2c28e32bf0, type: 3}
   m_Name: SmallBuilding
   m_EditorClassIdentifier: 
-  StructurePrefab: {fileID: 1569878370416335215, guid: 82f204bbe41de54468c1e2dc95240992, type: 3}
+  StructurePrefab: {fileID: 6121884463823609084, guid: a9a2a8c1bdb05494eb562d60c54196f3, type: 3}
   SType: 0
   BuildTime: 40

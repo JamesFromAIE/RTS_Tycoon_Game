@@ -4,6 +4,20 @@ using UnityEngine;
 
 public static class Helper 
 {
+    public static MeshRenderer FindMeshRendererOnStructure(this StructureBase structure)
+    {
+        MeshRenderer meshRend = structure.GetComponent<MeshRenderer>();
+
+        if (meshRend) return meshRend;
+        else
+        {
+            meshRend = structure.GetComponentInChildren<MeshRenderer>();
+
+            if (meshRend) return meshRend;
+            else return null;
+        }
+    }
+
     public static void SetFirstMaterial(this MeshRenderer meshRend, Material newMat)
     {
         var currMats = meshRend.materials;

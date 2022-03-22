@@ -15,6 +15,8 @@ MonoBehaviour:
   _renderer: {fileID: 734770154964386310}
   _isBuildable: 1
   OccupiedStructure: {fileID: 0}
+  _canBuildMat: {fileID: 2100000, guid: c7864617613a8b644814e7c96e3858ee, type: 2}
+  _cantBuildMat: {fileID: 2100000, guid: 8625a1c3ac283164cbb0e2d3c67b4d5b, type: 2}
   _baseMaterial: {fileID: 2100000, guid: 904b94629d29c2843aba97b5e21bf859, type: 2}
   _offsetMaterial: {fileID: 2100000, guid: 41147bbf8e3f5974685bbec62881d42a, type: 2}
   _hoverMaterial: {fileID: 2100000, guid: 24c53ab0dc492254aa9f057c1dff041e, type: 2}

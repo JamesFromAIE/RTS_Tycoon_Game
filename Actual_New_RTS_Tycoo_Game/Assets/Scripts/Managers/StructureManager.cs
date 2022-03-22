@@ -6,6 +6,7 @@ using UnityEngine;
 public class StructureManager : MonoBehaviour
 {
     public static StructureManager Instance;
+    public StructureBase _selectedStructure { get; private set; }
 
     private List<ScriptableStructure> _structures;
     private Dictionary<Vector3, StructureBase> _currStructures;
@@ -29,10 +30,11 @@ public class StructureManager : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, 100, _structureLayer))
             {
+                var offset = new Vector3(0, 0.5f, 0);
                 var hitPos = new Vector3(
                     (int)hit.transform.position.x,
                     (int)hit.transform.position.y,
-                    (int)hit.transform.position.z) + new Vector3(0.5f, 0.5f, 0.5f);
+                    (int)hit.transform.position.z) + offset;
                 StructureBase hitStructure = GetStructureAtPosition(hitPos);
 
                 Tile tile = hitStructure.OccupiedTile;
@@ -79,17 +81,30 @@ public class StructureManager : MonoBehaviour
         Destroy(structure.gameObject);
     }
 
-    public void SpawnBuildingOnTile(Tile tile)
+    public StructureBase SpawnEmptyStructureOnTile(Tile tile)
     {
-        if (!tile) return;
+        if (!tile || !_selectedStructure) return null;
 
-        var randomPrefab = GetRandomStructure<StructureBase>(StructureType.Building);
+        var structPrefab = _selectedStructure;
+
+        var spawnedStructure = Instantiate(structPrefab);
+        tile.SetEmptyStructure(spawnedStructure);
+
+        return spawnedStructure;
         
-        var dimensions = randomPrefab.XZDimensions;
+    }
+
+    public void SpawnStructureOnTile(Tile tile)
+    {
+        if (!tile || !_selectedStructure) return;
+
+        var structPrefab = _selectedStructure;
+        
+        var dimensions = structPrefab.XZDimensions;
 
         if (GridManager.Instance.IsTileBuildable(tile, dimensions))
         {
-            var spawnedStructure = Instantiate(randomPrefab);
+            var spawnedStructure = Instantiate(structPrefab);
             tile.SetStructure(spawnedStructure);
 
             _currStructures[spawnedStructure.transform.position] = spawnedStructure;
@@ -130,6 +145,11 @@ public class StructureManager : MonoBehaviour
             return tile;
         }
         return null;
+    }
+
+    public void SetSelectedStructure(StructureBase structure)
+    {
+        _selectedStructure = structure;
     }
 
 }

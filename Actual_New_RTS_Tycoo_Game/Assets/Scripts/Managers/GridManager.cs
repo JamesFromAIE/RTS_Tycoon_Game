@@ -37,12 +37,9 @@ public class GridManager : MonoBehaviour
                     (int)hit.transform.position.x, 0,
                     (int)hit.transform.position.z);
                 Tile tile = GetTileAtPosition(hitPos);
-                StructureManager.Instance.SpawnBuildingOnTile(tile);
+                StructureManager.Instance.SpawnStructureOnTile(tile);
             }
         }
-
-        
-
     }
 
     public void GenerateGrid()
@@ -224,6 +221,8 @@ public class GridManager : MonoBehaviour
 
     public bool IsTileBuildable(Tile spawnTile, Vector2[] dimensions)
     {
+        if (!spawnTile || dimensions == null) return false;
+
         for (int i = 0; i < dimensions.Length; i++)
         {
             var tilePos = Helper.XYToXZInt(dimensions[i]) +
