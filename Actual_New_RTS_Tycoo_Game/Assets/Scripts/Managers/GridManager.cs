@@ -26,8 +26,7 @@ public class GridManager : MonoBehaviour
     void Update()
     {
         
-        if (!Input.GetMouseButtonDown(0)) return;
-        else
+        if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -35,12 +34,15 @@ public class GridManager : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100, _tileLayer))
             {
                 var hitPos = new Vector3Int(
-                    (int)hit.transform.position.x, 0, 
+                    (int)hit.transform.position.x, 0,
                     (int)hit.transform.position.z);
                 Tile tile = GetTileAtPosition(hitPos);
                 StructureManager.Instance.SpawnBuildingOnTile(tile);
             }
         }
+
+        
+
     }
 
     public void GenerateGrid()

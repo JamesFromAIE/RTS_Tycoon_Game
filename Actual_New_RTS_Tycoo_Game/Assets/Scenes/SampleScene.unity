@@ -152,6 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 952e04c504bcd1e43aa1c8a748bbd752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _structureLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!4 &158542570
 Transform:
   m_ObjectHideFlags: 0
@@ -496,14 +499,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5da399bbab216ed42aa072f275bd7c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 30
+  _width: 10
   _length: 20
-  _outerThickness: 3
+  _outerThickness: 1
   _bufferList:
-  - {x: 2, y: 4}
-  - {x: 7, y: 10}
-  - {x: 1, y: 20}
-  - {x: 3, y: 5}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
   _buildableTile: {fileID: -1255577245867215078, guid: e97c6f2da030d2f4d95221e58bcf4d80, type: 3}
   _staticTile: {fileID: 6109339843513069367, guid: a3dee4bf0b32040488827f71c26798e1, type: 3}
   _tileLayer:

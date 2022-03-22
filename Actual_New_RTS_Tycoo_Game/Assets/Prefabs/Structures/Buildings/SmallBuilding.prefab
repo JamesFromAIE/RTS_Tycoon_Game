@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 375804962084857197}
   - component: {fileID: 375804962084857194}
   - component: {fileID: 1569878370416335215}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SmallBuilding
   m_TagString: Untagged
   m_Icon: {fileID: 0}

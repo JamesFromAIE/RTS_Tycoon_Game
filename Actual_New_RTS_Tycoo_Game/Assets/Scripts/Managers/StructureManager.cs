@@ -8,12 +8,37 @@ public class StructureManager : MonoBehaviour
     public static StructureManager Instance;
 
     private List<ScriptableStructure> _structures;
+    private Dictionary<Vector3, StructureBase> _currStructures;
+
+    [SerializeField] LayerMask _structureLayer;
 
     void Awake()
     {
         Instance = this;
 
         _structures = Resources.LoadAll<ScriptableStructure>("Structures").ToList();
+        _currStructures = new Dictionary<Vector3, StructureBase>();
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit, 100, _structureLayer))
+            {
+                var hitPos = new Vector3(
+                    (int)hit.transform.position.x,
+                    (int)hit.transform.position.y,
+                    (int)hit.transform.position.z) + new Vector3(0.5f, 0.5f, 0.5f);
+                StructureBase hitStructure = GetStructureAtPosition(hitPos);
+
+                Tile tile = hitStructure.OccupiedTile;
+                RemoveStructureFromTiles(hitStructure, tile);
+            }
+        }
     }
 
     public void SpawnBuilding()
@@ -32,6 +57,28 @@ public class StructureManager : MonoBehaviour
         }
     }
 
+    public void RemoveStructureFromTiles(StructureBase structure, Tile tile)
+    {
+        if (!structure || !tile) return;
+
+        var dimensions = structure.XZDimensions;
+
+        for (int i = 0; i < dimensions.Length; i++)
+        {
+            var tilePos = Helper.XYToXZInt(dimensions[i]) +
+                new Vector3Int((int)tile.transform.position.x, 0, (int)tile.transform.position.z);
+            var occupiedTile = GridManager.Instance.GetTileAtPosition(tilePos);
+
+            occupiedTile.UnassignStructure();
+        }
+
+        _currStructures.Remove(new Vector3(
+            structure.transform.position.x, 
+            structure.transform.position.y,
+            structure.transform.position.z));
+        Destroy(structure.gameObject);
+    }
+
     public void SpawnBuildingOnTile(Tile tile)
     {
         if (!tile) return;
@@ -44,6 +91,8 @@ public class StructureManager : MonoBehaviour
         {
             var spawnedStructure = Instantiate(randomPrefab);
             tile.SetStructure(spawnedStructure);
+
+            _currStructures[spawnedStructure.transform.position] = spawnedStructure;
         }
         else
         {
@@ -74,6 +123,13 @@ public class StructureManager : MonoBehaviour
 
     }
 
-    
+    public StructureBase GetStructureAtPosition(Vector3 pos)
+    {
+        if (_currStructures.TryGetValue(pos, out var tile))
+        {
+            return tile;
+        }
+        return null;
+    }
 
 }

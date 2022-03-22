@@ -33,7 +33,11 @@ public abstract class Tile : MonoBehaviour
 
             tile.OccupiedStructure = structure;
         }
+    }
 
+    public void UnassignStructure()
+    {
+        OccupiedStructure = null;
     }
 
     

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 533418795057134018}
   - component: {fileID: 533418795057134017}
   - component: {fileID: -5966505024900242049}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shrine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
