@@ -12,14 +12,14 @@ public class BuildableTile : Tile
     public override void Init(int x, int z)
     {
         var isOffset = (x + z) % 2 == 1;
-        Debug.Log(isOffset);
         if (isOffset) _renderer.SetFirstMaterial(_offsetMaterial);
         else _renderer.SetFirstMaterial(_baseMaterial);
     }
 
     void OnMouseEnter()
     {
-        Debug.Log("Mouse Arrived on " + name + ".");
+        //if (!GameManager.Instance.IsGameInThisState(GameManager.GameStates.GameResumed)) return;
+
         _oldMat = _renderer.materials[0];
 
         _renderer.SetFirstMaterial(_hoverMaterial);
@@ -53,7 +53,8 @@ public class BuildableTile : Tile
 
     void OnMouseExit()
     {
-        Debug.Log("Mouse Left on " + name + ".");
+        //if (!GameManager.Instance.IsGameInThisState(GameManager.GameStates.GameResumed)) return;
+
         if (_highlightedStructure) Destroy(_highlightedStructure.gameObject);
 
         _renderer.SetFirstMaterial(_oldMat);

@@ -23,6 +23,7 @@ public class StructureManager : MonoBehaviour
 
     void Update()
     {
+        if (!GameManager.Instance.IsGameInThisState(GameManager.GameStates.GameResumed)) return;
         if (Input.GetMouseButtonDown(1))
         {
             RaycastHit hit;

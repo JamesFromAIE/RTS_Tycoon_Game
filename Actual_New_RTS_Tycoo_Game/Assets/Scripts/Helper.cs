@@ -4,6 +4,14 @@ using UnityEngine;
 
 public static class Helper 
 {
+
+    public static void ToggleUIElementVisibility(this List<GameObject> list,bool condition)
+    {
+        foreach(GameObject element in list)
+        {
+            element.SetActive(condition);
+        }
+    }
     public static MeshRenderer FindMeshRendererOnStructure(this StructureBase structure)
     {
         MeshRenderer meshRend = structure.GetComponent<MeshRenderer>();
