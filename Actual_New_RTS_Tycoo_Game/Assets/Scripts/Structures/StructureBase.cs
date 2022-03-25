@@ -6,4 +6,5 @@ public class StructureBase : MonoBehaviour
 {
     public Tile OccupiedTile;
     public Vector2[] XZDimensions;
+    public ScriptableStructure StructureStats;
 }

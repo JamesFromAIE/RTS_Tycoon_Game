@@ -26,7 +26,7 @@ public class GridManager : MonoBehaviour
     void Update()
     {
         if (!GameManager.Instance.IsGameInThisState(GameManager.GameStates.GameResumed)) return;
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -42,29 +42,9 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public void GenerateGrid()
-    {
-        _tiles = new Dictionary<Vector3Int, Tile>();
-        _staticTiles = new Dictionary<Vector3Int, Tile>();
-        cornerTiles = new List<Vector2Int>();
-        for (int x = 0; x < _width; x++)
-        {
-            for (int z = 0; z < _length; z++)
-            {
-                if (CheckIfTileIsStatic(x, z, _bufferList))
-                {
-                    SpawnStaticTile(x, z);
-                }
-                else
-                {
-                    SpawnBuildableTile(x, z);
-                }
-            }
-        }
-        SpawnBorderStaticTiles(_width, _length);
+    
 
-        GameManager.Instance.ChangeState(GameManager.GameStates.GameStopped);
-    }
+    #region Private Methods
 
     void SpawnBorderStaticTiles(int gridWidth, int gridLength)
     {
@@ -188,6 +168,33 @@ public class GridManager : MonoBehaviour
 
         _staticTiles[new Vector3Int(x, 0, z)] = spawnedTile;
     }
+    #endregion
+
+    #region Public Methods
+
+    public void GenerateGrid()
+    {
+        _tiles = new Dictionary<Vector3Int, Tile>();
+        _staticTiles = new Dictionary<Vector3Int, Tile>();
+        cornerTiles = new List<Vector2Int>();
+        for (int x = 0; x < _width; x++)
+        {
+            for (int z = 0; z < _length; z++)
+            {
+                if (CheckIfTileIsStatic(x, z, _bufferList))
+                {
+                    SpawnStaticTile(x, z);
+                }
+                else
+                {
+                    SpawnBuildableTile(x, z);
+                }
+            }
+        }
+        SpawnBorderStaticTiles(_width, _length);
+
+        //GameManager.Instance.ChangeState(GameManager.GameStates.GameStopped);
+    }
 
     public Tile GetRandomStructureSpawnTile(Vector2[] dimensions)
     {
@@ -257,4 +264,6 @@ public class GridManager : MonoBehaviour
         }
         return null;
     }
+
+    #endregion
 }

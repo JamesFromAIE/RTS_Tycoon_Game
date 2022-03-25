@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        ChangeState(GameStates.GenerateGrid);
+        ChangeState(GameStates.GenerateLevel);
     }
 
     public bool IsGameInThisState(GameStates checkState)
@@ -28,26 +28,28 @@ public class GameManager : MonoBehaviour
         GameState = newState;
         switch(newState)
         {
-            case GameStates.GenerateGrid:
+            case GameStates.GenerateLevel:
                 Debug.Log("Generated Grid");
                 GridManager.Instance.GenerateGrid();
+                MoveCam.Instance.SetOrthoCamPosition();
+                ChangeState(GameStates.GameResumed);
                 break;
             case GameStates.GameStopped:
                 Debug.Log("Game Time has been Stopped");
-                MoveCam.Instance.SetOrthoCamPosition();
+                Time.timeScale = 0;
                 break;
             case GameStates.GameResumed:
-                Debug.Log("Game Time has Resumed");
+                Debug.Log("Game Time has been Resumed");
                 Time.timeScale = 1;
                 break;
             case GameStates.GamePaused:
-                Debug.Log("Game has been manually Paused");
+                Debug.Log("Game has been Paused");
                 UIManager.Instance.PauseButtonPausesGame();
                 break;
             case GameStates.GameUnpaused:
-                Debug.Log("Game has been manually Resumed");
+                Debug.Log("Game has been Unpaused");
                 UIManager.Instance.PauseButtonResumesGame();
-                ChangeState(GameStates.GameResumed);
+                ChangeState(UIManager.Instance.prevState);
                 break;
             case GameStates.GameOver:
                 Debug.Log("Game is now Over");
@@ -62,7 +64,7 @@ public class GameManager : MonoBehaviour
 
     public enum GameStates
     {
-        GenerateGrid = 0,
+        GenerateLevel = 0,
         GameStopped = 1,
         GameResumed = 2,
         GamePaused = 3,

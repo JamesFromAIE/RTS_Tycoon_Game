@@ -5,13 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Structure", menuName = "Scriptable Structure")]
 public class ScriptableStructure : ScriptableObject
 {
-    public StructureBase StructurePrefab;
-    public StructureType SType;
-    public int BuildTime;
+    public int GoldCost { get { return goldCost; } private set { goldCost = value; } }
+    [SerializeField]
+    private int goldCost = 0;
+    public int StoneCost { get { return stoneCost; } private set { stoneCost = value; } }
+    [SerializeField]
+    private int stoneCost = 0;
+    public int BuildTime { get { return buildTime; } private set { buildTime = value; } }
+    [SerializeField]
+    private int buildTime = 0;
 }
 
-public enum StructureType
-{
-    Building = 0,
-    Landmark = 1,
-}

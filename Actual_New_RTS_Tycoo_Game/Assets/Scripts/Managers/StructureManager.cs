@@ -8,7 +8,6 @@ public class StructureManager : MonoBehaviour
     public static StructureManager Instance;
     public StructureBase _selectedStructure { get; private set; }
 
-    private List<ScriptableStructure> _structures;
     private Dictionary<Vector3, StructureBase> _currStructures;
 
     [SerializeField] LayerMask _structureLayer;
@@ -17,14 +16,13 @@ public class StructureManager : MonoBehaviour
     {
         Instance = this;
 
-        _structures = Resources.LoadAll<ScriptableStructure>("Structures").ToList();
         _currStructures = new Dictionary<Vector3, StructureBase>();
     }
 
     void Update()
     {
         if (!GameManager.Instance.IsGameInThisState(GameManager.GameStates.GameResumed)) return;
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButton(1))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -44,28 +42,16 @@ public class StructureManager : MonoBehaviour
         }
     }
 
-    public void SpawnBuilding()
-    {
-        var structureCount = 10;
-
-        for (int i = 0; i < structureCount; i++)
-        {
-            var randomPrefab = GetRandomStructure<BuildingBase>(StructureType.Building);
-            var spawnedBuilding = Instantiate(randomPrefab);
-            var dimensions = spawnedBuilding.XZDimensions;
-            var randomSpawnTile = GridManager.Instance.GetRandomStructureSpawnTile(dimensions);
-
-            randomSpawnTile.SetStructure(spawnedBuilding);
-
-        }
-    }
+    #region Public Methods
 
     public void RemoveStructureFromTiles(StructureBase structure, Tile tile)
     {
         if (!structure || !tile) return;
 
-        var dimensions = structure.XZDimensions;
+        var sStats = structure.StructureStats;
+        UIManager.Instance.SellStructure(sStats.GoldCost, sStats.StoneCost);
 
+        var dimensions = structure.XZDimensions;
         for (int i = 0; i < dimensions.Length; i++)
         {
             var tilePos = Helper.XYToXZInt(dimensions[i]) +
@@ -100,12 +86,15 @@ public class StructureManager : MonoBehaviour
         if (!tile || !_selectedStructure) return;
 
         var structPrefab = _selectedStructure;
-        
-        var dimensions = structPrefab.XZDimensions;
 
-        if (GridManager.Instance.IsTileBuildable(tile, dimensions))
+        var dimensions = structPrefab.XZDimensions;
+        var sStats = structPrefab.StructureStats;
+
+        if (GridManager.Instance.IsTileBuildable(tile, dimensions) && 
+            UIManager.Instance.IsStructureBuyable(sStats.GoldCost, sStats.StoneCost))
         {
             var spawnedStructure = Instantiate(structPrefab);
+            UIManager.Instance.BuyStructure(sStats.GoldCost, sStats.StoneCost);
             tile.SetStructure(spawnedStructure);
 
             _currStructures[spawnedStructure.transform.position] = spawnedStructure;
@@ -113,31 +102,11 @@ public class StructureManager : MonoBehaviour
         else
         {
             //var structure = tile.OccupiedStructure;
-            Debug.Log("Cannot Build Structure HERE!!!");
+            //Debug.Log("Cannot Build Structure HERE!!!");
         }
         
     }
 
-    public void SpawnLandmark()
-    {
-        var landmarkCount = 20;
-
-        for (int i = 0; i < landmarkCount; i++)
-        {
-            var randomPrefab = GetRandomStructure<LandmarkBase>(StructureType.Landmark);
-            var spawnedLankmark = Instantiate(randomPrefab);
-            var dimensions = spawnedLankmark.XZDimensions;
-            var randomSpawnTile = GridManager.Instance.GetRandomStructureSpawnTile(dimensions);
-
-            randomSpawnTile.SetStructure(spawnedLankmark);
-        }
-    }
-
-    private T GetRandomStructure<T>(StructureType sType) where T : StructureBase
-    {
-        return (T)_structures.Where(u => u.SType == sType).OrderBy(o => Random.value).First().StructurePrefab;
-
-    }
 
     public StructureBase GetStructureAtPosition(Vector3 pos)
     {
@@ -152,5 +121,7 @@ public class StructureManager : MonoBehaviour
     {
         _selectedStructure = structure;
     }
+
+    #endregion
 
 }

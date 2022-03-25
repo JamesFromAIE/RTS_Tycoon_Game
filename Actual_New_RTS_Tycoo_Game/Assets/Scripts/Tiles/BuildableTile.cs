@@ -15,6 +15,7 @@ public class BuildableTile : Tile
         if (isOffset) _renderer.SetFirstMaterial(_offsetMaterial);
         else _renderer.SetFirstMaterial(_baseMaterial);
     }
+    #region MouseOnOff Methods
 
     void OnMouseEnter()
     {
@@ -59,6 +60,8 @@ public class BuildableTile : Tile
 
         _renderer.SetFirstMaterial(_oldMat);
     }
+
+    #endregion
 
     Tile GrabTileFromRaycast()
     {

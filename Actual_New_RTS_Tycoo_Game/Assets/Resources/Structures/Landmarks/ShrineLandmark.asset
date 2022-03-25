@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4102f840985b2e243bcada2c28e32bf0, type: 3}
   m_Name: ShrineLandmark
   m_EditorClassIdentifier: 
-  StructurePrefab: {fileID: -5966505024900242049, guid: a4d2a95e5cf0dad4a8e4594f4bd1b6d6, type: 3}
-  SType: 1
-  BuildTime: 80
+  goldCost: 500
+  stoneCost: 400
+  buildTime: 80
