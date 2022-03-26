@@ -26,10 +26,13 @@ public class BuildableTile : Tile
         _renderer.SetFirstMaterial(_hoverMaterial);
 
         var selectedStructure = StructureManager.Instance._selectedStructure;
+
         Tile tile = GrabTileFromRaycast();
         if (!tile || !selectedStructure) return;
 
-        if (GridManager.Instance.IsTileBuildable(tile, selectedStructure.XZDimensions))
+        var dimensions = Helper.Vector2ToGridCoordinates(selectedStructure.XZDimensions);
+
+        if (GridManager.Instance.IsTileBuildable(tile, dimensions))
         {
             _highlightedStructure = StructureManager.Instance.SpawnEmptyStructureOnTile(tile);
 

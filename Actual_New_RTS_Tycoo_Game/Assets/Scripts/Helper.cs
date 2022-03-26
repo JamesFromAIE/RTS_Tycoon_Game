@@ -5,6 +5,21 @@ using UnityEngine;
 public static class Helper 
 {
 
+    public static Vector2[] Vector2ToGridCoordinates(Vector2Int dimensions)
+    {
+        List<Vector2> coordinatesList = new List<Vector2>();
+        for (int x = 0; x < dimensions.x; x++)
+        {
+            for (int z = 0; z < dimensions.y; z++)
+            {
+                coordinatesList.Add(new Vector2(x, z));
+            }
+        }
+
+        var coordinatesArray = coordinatesList.ToArray();
+        return coordinatesArray;
+    }
+
     public static void ToggleUIElementVisibility(this List<GameObject> list,bool condition)
     {
         foreach(GameObject element in list)

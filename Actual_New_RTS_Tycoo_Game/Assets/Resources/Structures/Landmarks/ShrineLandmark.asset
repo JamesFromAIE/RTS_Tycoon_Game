@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4102f840985b2e243bcada2c28e32bf0, type: 3}
   m_Name: ShrineLandmark
   m_EditorClassIdentifier: 
-  goldCost: 500
-  stoneCost: 400
-  buildTime: 80
+  _goldCost: 500
+  _stoneCost: 400
+  _buildTime: 80

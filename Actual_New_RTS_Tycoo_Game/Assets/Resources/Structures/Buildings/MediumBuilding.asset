@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4102f840985b2e243bcada2c28e32bf0, type: 3}
-  m_Name: SmallBuilding
+  m_Name: MediumBuilding
   m_EditorClassIdentifier: 
-  _goldCost: 200
-  _stoneCost: 300
-  _buildTime: 40
+  _goldCost: 650
+  _stoneCost: 850
+  _buildTime: 100

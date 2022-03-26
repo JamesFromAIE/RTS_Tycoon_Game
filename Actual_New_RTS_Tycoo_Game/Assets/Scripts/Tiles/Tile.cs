@@ -30,7 +30,7 @@ public abstract class Tile : MonoBehaviour
 
         structure.OccupiedTile = this;
 
-        var dimensions = structure.XZDimensions;
+        var dimensions = Helper.Vector2ToGridCoordinates(structure.XZDimensions);
         for (int i = 0; i < dimensions.Length; i++)
         {
             var tilePos = Helper.XYToXZInt(dimensions[i]) +

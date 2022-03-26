@@ -51,7 +51,7 @@ public class StructureManager : MonoBehaviour
         var sStats = structure.StructureStats;
         UIManager.Instance.SellStructure(sStats.GoldCost, sStats.StoneCost);
 
-        var dimensions = structure.XZDimensions;
+        var dimensions = Helper.Vector2ToGridCoordinates(structure.XZDimensions);
         for (int i = 0; i < dimensions.Length; i++)
         {
             var tilePos = Helper.XYToXZInt(dimensions[i]) +
@@ -87,7 +87,7 @@ public class StructureManager : MonoBehaviour
 
         var structPrefab = _selectedStructure;
 
-        var dimensions = structPrefab.XZDimensions;
+        var dimensions = Helper.Vector2ToGridCoordinates(structPrefab.XZDimensions);
         var sStats = structPrefab.StructureStats;
 
         if (GridManager.Instance.IsTileBuildable(tile, dimensions) && 

@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 533418795057134028}
+  - component: {fileID: -5966505024900242049}
   - component: {fileID: 533418795057134019}
   - component: {fileID: 533418795057134018}
   - component: {fileID: 533418795057134017}
-  - component: {fileID: -5966505024900242049}
   m_Layer: 7
   m_Name: Shrine
   m_TagString: Untagged
@@ -34,6 +34,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-5966505024900242049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533418795057134016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9644b4b1b3442cc4d82361657c620cfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OccupiedTile: {fileID: 0}
+  XZDimensions: {x: 1, y: 1}
+  StructureStats: {fileID: 11400000, guid: 44d1b8defcf10274299f4cc376df0692, type: 2}
 --- !u!33 &533418795057134019
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -96,19 +111,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-5966505024900242049
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 533418795057134016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9644b4b1b3442cc4d82361657c620cfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OccupiedTile: {fileID: 0}
-  XZDimensions:
-  - {x: 0, y: 0}
-  StructureStats: {fileID: 11400000, guid: 44d1b8defcf10274299f4cc376df0692, type: 2}

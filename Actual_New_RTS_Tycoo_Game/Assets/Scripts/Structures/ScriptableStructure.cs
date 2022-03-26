@@ -5,14 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Structure", menuName = "Scriptable Structure")]
 public class ScriptableStructure : ScriptableObject
 {
-    public int GoldCost { get { return goldCost; } private set { goldCost = value; } }
+    public int GoldCost { get { return _goldCost; } private set { _goldCost = value; } }
     [SerializeField]
-    private int goldCost = 0;
-    public int StoneCost { get { return stoneCost; } private set { stoneCost = value; } }
+    private int _goldCost = 0;
+    public int StoneCost { get { return _stoneCost; } private set { _stoneCost = value; } }
     [SerializeField]
-    private int stoneCost = 0;
-    public int BuildTime { get { return buildTime; } private set { buildTime = value; } }
+    private int _stoneCost = 0;
+    public int BuildTime { get { return _buildTime; } private set { _buildTime = value; } }
     [SerializeField]
-    private int buildTime = 0;
+    private int _buildTime = 0;
 }
 
