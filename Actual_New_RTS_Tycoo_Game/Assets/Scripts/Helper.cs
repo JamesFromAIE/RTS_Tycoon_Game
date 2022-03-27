@@ -4,6 +4,10 @@ using UnityEngine;
 
 public static class Helper 
 {
+    public static bool ContainBounds(this Bounds bounds, Bounds target)
+    {
+        return bounds.Contains(target.center);
+    }
 
     public static Vector2[] Vector2ToGridCoordinates(Vector2Int dimensions)
     {

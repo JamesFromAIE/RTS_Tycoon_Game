@@ -38,6 +38,7 @@ public class GridManager : MonoBehaviour
                     (int)hit.transform.position.z);
                 Tile tile = GetTileAtPosition(hitPos);
                 StructureManager.Instance.SpawnStructureOnTile(tile);
+                UIManager.Instance.TriggerConstructionEvent();
             }
         }
     }

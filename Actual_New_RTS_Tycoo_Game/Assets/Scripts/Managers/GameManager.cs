@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
             case GameStates.GameUnpaused:
                 Debug.Log("Game has been Unpaused");
                 UIManager.Instance.PauseButtonResumesGame();
-                ChangeState(UIManager.Instance.prevState);
+                ChangeState(UIManager.Instance.PrevState);
                 break;
             case GameStates.GameOver:
                 Debug.Log("Game is now Over");

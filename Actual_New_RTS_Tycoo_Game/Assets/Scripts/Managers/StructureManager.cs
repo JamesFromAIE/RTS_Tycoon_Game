@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class StructureManager : MonoBehaviour
 {
     public static StructureManager Instance;
     public StructureBase _selectedStructure { get; private set; }
+    
 
     private Dictionary<Vector3, StructureBase> _currStructures;
 
@@ -61,11 +63,19 @@ public class StructureManager : MonoBehaviour
             occupiedTile.UnassignStructure();
         }
 
+
+
         _currStructures.Remove(new Vector3(
             structure.transform.position.x, 
             structure.transform.position.y,
             structure.transform.position.z));
+
+        if (structure.TryGetComponent(out BuildingBase bScript))
+            UIManager.Instance.UpdateBuildingPopulation.RemoveListener(bScript.SendPopulation);
+
+        UIManager.Instance.TriggerConstructionEvent();
         Destroy(structure.gameObject);
+
     }
 
     public StructureBase SpawnEmptyStructureOnTile(Tile tile)
@@ -94,10 +104,19 @@ public class StructureManager : MonoBehaviour
             UIManager.Instance.IsStructureBuyable(sStats.GoldCost, sStats.StoneCost))
         {
             var spawnedStructure = Instantiate(structPrefab);
+
+            spawnedStructure.Placed();
+            spawnedStructure.Constructed(); // RELOCATE THIS ONCE 'CONSTRUCTION' IS IMPLEMENTED
             UIManager.Instance.BuyStructure(sStats.GoldCost, sStats.StoneCost);
             tile.SetStructure(spawnedStructure);
 
             _currStructures[spawnedStructure.transform.position] = spawnedStructure;
+
+            if (spawnedStructure.TryGetComponent(out BuildingBase bScript))
+                UIManager.Instance.UpdateBuildingPopulation.AddListener(bScript.SendPopulation);
+
+
+            //UIManager.Instance.SetPopulation(GetCurrentPopulation());
         }
         else
         {
@@ -124,4 +143,8 @@ public class StructureManager : MonoBehaviour
 
     #endregion
 
+    #region Private Methods
+
+
+    #endregion
 }

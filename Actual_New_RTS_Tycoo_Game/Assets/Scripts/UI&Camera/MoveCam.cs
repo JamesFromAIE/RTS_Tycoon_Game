@@ -9,6 +9,9 @@ public class MoveCam : MonoBehaviour
     [SerializeField] float _buffer;
     [SerializeField] float _scrollSpeed;
     Camera _cam;
+    Bounds _camBounds;
+
+    Vector3 _dragOrigin;
     float _minSize;
     float _maxSize;
 
@@ -20,7 +23,14 @@ public class MoveCam : MonoBehaviour
 
     void Update()
     {
-        _cam.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * _scrollSpeed;
+        DragCamera();
+
+        if (Input.GetAxis("Mouse ScrollWheel") != 0)
+            _cam.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * _scrollSpeed;
+    }
+
+    void LateUpdate()
+    {
         _cam.orthographicSize = ClampCamSize(_cam.orthographicSize);
     }
 
@@ -28,17 +38,62 @@ public class MoveCam : MonoBehaviour
 
     public void SetOrthoCamPosition()
     {
-        var (center, size) = FindGridCamSize();
+        var (center, size, bounds) = FindGridCamCenterAndSize();
+
         _cam.transform.position = center - (_cam.transform.forward * 30);
+
         _cam.orthographicSize = size;
         _maxSize = size;
         _minSize = size / 5;
+        _camBounds = bounds;
     }
     #endregion
 
     #region Private Methods
 
-    private (Vector3 center, float size) FindGridCamSize()
+    private bool IsCameraWithinBounds()
+    {
+        var currBounds = GrabCameraBounds();
+        if (_camBounds.ContainBounds(currBounds)) return true;
+        else
+        {
+            return false;
+        }
+    }
+
+    private void DragCamera()
+    {
+        if (Input.GetMouseButtonDown(2))
+            _dragOrigin = _cam.ScreenToWorldPoint(Input.mousePosition);
+
+        if (Input.GetMouseButton(2))
+        {
+            //Debug.Log("Scroll Button Pressed");
+            Vector3 difference = _dragOrigin - _cam.ScreenToWorldPoint(Input.mousePosition);
+            _cam.transform.position += difference;
+            if (!IsCameraWithinBounds())
+            {
+                _cam.transform.position -= difference * 1.005f;
+            }
+
+        }
+    }
+
+    private Bounds GrabCameraBounds()
+    {
+        var camToWorldPositions = new List<Vector3>();
+
+        Ray ray = _cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Vector3 center = (ray.GetPoint(30));
+
+        var bounds = new Bounds(center, new Vector3(_cam.orthographicSize, 2.5f, _cam.orthographicSize));
+        //bounds.Expand(_buffer);
+
+        return bounds;
+
+    }
+
+    private (Vector3 center, float size, Bounds camBounds) FindGridCamCenterAndSize()
     {
         var bounds = new Bounds();
         var v3Corners = GrabCornerPositions();
@@ -53,7 +108,7 @@ public class MoveCam : MonoBehaviour
         var size = Mathf.Max(horizontal, vertical) * 0.5f;
         var center = bounds.center;
 
-        return (center, size);
+        return (center, size, bounds);
     }
 
     private List<Vector3> GrabCornerPositions()
@@ -72,9 +127,7 @@ public class MoveCam : MonoBehaviour
 
     private float ClampCamSize(float camSize)
     {
-        if (camSize < _minSize) camSize = _minSize;
-        else if (camSize > _maxSize) camSize = _maxSize;
-        return camSize;
+        return Mathf.Clamp(camSize, _minSize, _maxSize);
     }
 
     #endregion

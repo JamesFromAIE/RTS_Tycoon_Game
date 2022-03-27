@@ -7,4 +7,14 @@ public class StructureBase : MonoBehaviour
     public Tile OccupiedTile;
     public Vector2Int XZDimensions;
     public ScriptableStructure StructureStats;
+
+    public virtual void Placed()
+    {
+
+    }
+
+    public virtual void Constructed()
+    {
+
+    }
 }

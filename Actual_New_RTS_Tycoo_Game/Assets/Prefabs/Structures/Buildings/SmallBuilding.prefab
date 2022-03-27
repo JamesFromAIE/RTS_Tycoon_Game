@@ -48,6 +48,7 @@ MonoBehaviour:
   OccupiedTile: {fileID: 0}
   XZDimensions: {x: 2, y: 2}
   StructureStats: {fileID: 11400000, guid: e6ecb6196a1ac3d44aac5b6263940630, type: 2}
+  Population: 8
 --- !u!65 &4620806225563204976
 BoxCollider:
   m_ObjectHideFlags: 0

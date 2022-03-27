@@ -2,26 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using TMPro;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
-    public GameManager.GameStates prevState { get; private set; }
 
-    [SerializeField] TMPro.TextMeshProUGUI goldText, stoneText;
-    [SerializeField] int goldStart, stoneStart;
-    public int goldBalance { get; private set; }
-    public int stoneBalance { get; private set; }
+    [HideInInspector] public UnityEvent UpdateBuildingPopulation;
+    public GameManager.GameStates PrevState { get; private set; }
+
+    [SerializeField] TMPro.TextMeshProUGUI _goldText, _stoneText, _populationText;
+    [SerializeField] int _goldStart, _stoneStart, _populationStart;
+    public int GoldBalance { get; private set; }
+    public int StoneBalance { get; private set; }
+    public int PopulationBalance { get; private set; }
 
     [SerializeField] List<GameObject> _uIElements;
 
     void Awake()
     {
         Instance = this;
+        UpdateBuildingPopulation = new UnityEvent();
         _uIElements.ToggleUIElementVisibility(false);
-        goldBalance = goldStart;
-        stoneBalance = stoneStart;
+        GoldBalance = _goldStart;
+        StoneBalance = _stoneStart;
+        PopulationBalance = _populationStart;
         UpdateUIValues();
     }
 
@@ -38,7 +44,7 @@ public class UIManager : MonoBehaviour
             else if (gmInst.IsGameInThisState(GameManager.GameStates.GameResumed) ||
                        gmInst.IsGameInThisState(GameManager.GameStates.GameStopped))
             {
-                prevState = GameManager.Instance.GameState;
+                PrevState = GameManager.Instance.GameState;
                 gmInst.ChangeState(GameManager.GameStates.GamePaused);
             }
         }
@@ -70,31 +76,45 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void TriggerConstructionEvent()
+    {
+        PopulationBalance = 0;
+        UpdateBuildingPopulation.Invoke();
+        UpdateUIValues();
+    }
+
+    public void GainPopulation(int value)
+    {
+        PopulationBalance += value;
+        //UpdateUIValues();
+    }
+
     public void BuyStructure(int goldCost, int stoneCost)
     {
-        goldBalance -= goldCost;
-        stoneBalance -= stoneCost;
+        GoldBalance -= goldCost;
+        StoneBalance -= stoneCost;
         UpdateUIValues();
     }
 
     public void SellStructure(int goldCost, int stoneCost)
     {
-        goldBalance += goldCost / 2;
-        stoneBalance += stoneCost / 2;
+        GoldBalance += goldCost / 2;
+        StoneBalance += stoneCost / 2;
         UpdateUIValues();
     }
 
     public bool IsStructureBuyable(int goldCost, int stoneCost)
     {
-        if (goldBalance - goldCost < 0 || stoneBalance - stoneCost < 0) return false;
+        if (GoldBalance - goldCost < 0 || StoneBalance - stoneCost < 0) return false;
         else return true;
     }
 
 
     public void UpdateUIValues()
     {
-        goldText.text = "" + goldBalance;
-        stoneText.text = "" + stoneBalance;
+        _goldText.text = "" + GoldBalance;
+        _stoneText.text = "" + StoneBalance;
+        _populationText.text = "" + PopulationBalance;
     }
 
     #endregion
