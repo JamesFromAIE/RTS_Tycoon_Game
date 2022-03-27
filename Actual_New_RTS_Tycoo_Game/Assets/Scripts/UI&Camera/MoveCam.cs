@@ -7,8 +7,10 @@ public class MoveCam : MonoBehaviour
     public static MoveCam Instance;
 
     [SerializeField] float _buffer;
-    [SerializeField] float _distance;
+    [SerializeField] float _scrollSpeed;
     Camera _cam;
+    float _minSize;
+    float _maxSize;
 
     private void Awake()
     {
@@ -18,32 +20,25 @@ public class MoveCam : MonoBehaviour
 
     void Update()
     {
-        //SetOrthoCamPosition();
+        _cam.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * _scrollSpeed;
+        _cam.orthographicSize = ClampCamSize(_cam.orthographicSize);
     }
+
+    #region Public Methods
 
     public void SetOrthoCamPosition()
     {
-        var (center, size) = CalculateOrthoSize();
+        var (center, size) = FindGridCamSize();
         _cam.transform.position = center - (_cam.transform.forward * 30);
         _cam.orthographicSize = size;
-
+        _maxSize = size;
+        _minSize = size / 5;
     }
+    #endregion
 
-    private List<Vector3> GrabCornerPositions()
-    {
-        var tilePositions = new List<Vector3>();
-        var cornerTiles = GridManager.Instance.cornerTiles;
+    #region Private Methods
 
-        foreach (Vector2Int tilePos in cornerTiles)
-        {
-            var tile = GridManager.Instance.GetStaticTileAtPosition(new Vector3Int(tilePos.x, 0, tilePos.y));
-            tilePositions.Add(tile.transform.position);
-        }
-
-        return tilePositions;
-    }
-
-    private (Vector3 center, float size) CalculateOrthoSize()
+    private (Vector3 center, float size) FindGridCamSize()
     {
         var bounds = new Bounds();
         var v3Corners = GrabCornerPositions();
@@ -61,5 +56,26 @@ public class MoveCam : MonoBehaviour
         return (center, size);
     }
 
-    
+    private List<Vector3> GrabCornerPositions()
+    {
+        var tilePositions = new List<Vector3>();
+        var cornerTiles = GridManager.Instance.cornerTiles;
+
+        foreach (Vector2Int tilePos in cornerTiles)
+        {
+            var tile = GridManager.Instance.GetStaticTileAtPosition(new Vector3Int(tilePos.x, 0, tilePos.y));
+            tilePositions.Add(tile.transform.position);
+        }
+
+        return tilePositions;
+    }
+
+    private float ClampCamSize(float camSize)
+    {
+        if (camSize < _minSize) camSize = _minSize;
+        else if (camSize > _maxSize) camSize = _maxSize;
+        return camSize;
+    }
+
+    #endregion
 }

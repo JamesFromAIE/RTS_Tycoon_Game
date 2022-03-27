@@ -1693,7 +1693,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buffer: 5
-  _distance: 100
+  _scrollSpeed: 20
 --- !u!1 &1081018610
 GameObject:
   m_ObjectHideFlags: 0
@@ -2153,9 +2153,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5da399bbab216ed42aa072f275bd7c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 22
-  _length: 18
-  _outerThickness: 8
+  _width: 20
+  _length: 20
+  _outerThickness: 1
   _bufferList:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
