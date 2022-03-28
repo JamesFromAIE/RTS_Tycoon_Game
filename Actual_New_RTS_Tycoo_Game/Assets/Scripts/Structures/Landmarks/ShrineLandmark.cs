@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ShrineLandmark : LandmarkBase
 {
-    public int popMultiplier;
+    public int AdditionalPopulation;
 
     public override int Effect(int oldPos)
     {
-        return oldPos * (popMultiplier + 1);
+        return oldPos + 5;
     }
 }

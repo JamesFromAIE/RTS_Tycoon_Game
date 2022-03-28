@@ -50,12 +50,12 @@ MonoBehaviour:
   OccupiedTile: {fileID: 0}
   XZDimensions: {x: 1, y: 1}
   StructureStats: {fileID: 11400000, guid: 44d1b8defcf10274299f4cc376df0692, type: 2}
-  AoEDistance: 20
+  AoEDistance: 2
   BuildingLayer:
     serializedVersion: 2
     m_Bits: 128
   AoERenderer: {fileID: 6224144110342421960}
-  popMultiplier: 1
+  AdditionalPopulation: 0
 --- !u!33 &533418795057134019
 MeshFilter:
   m_ObjectHideFlags: 0
