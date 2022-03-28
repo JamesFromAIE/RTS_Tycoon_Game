@@ -20,23 +20,24 @@ public class LandmarkBase : StructureBase
 
     public override void Constructed()
     {
-        CopySelfOnNearbyBuildings();
+        //CopySelfOnNearbyBuildings();
     }
 
     public void CopySelfOnNearbyBuildings()
     {
-        Collider[] structures = Physics.OverlapSphere(AoERenderer.transform.position, AoEDistance, BuildingLayer);
+        Collider[] structures =  Physics.OverlapSphere(AoERenderer.transform.position, AoEDistance, BuildingLayer);
 
         foreach(Collider building in structures)
         {
             if (building.TryGetComponent(out BuildingBase bScript))
             {
-                bScript.InRangeLankmarks.Add(this);
+                if (!bScript.InRangeLankmarks.Contains(this))
+                    bScript.InRangeLankmarks.Add(this);
             }
         }
     }
 
-    void OnDestroy()
+    public void RemoveSelfFromNearbyBuildings()
     {
         Collider[] colliders = Physics.OverlapSphere(AoERenderer.transform.position, AoEDistance, BuildingLayer);
 
@@ -44,8 +45,7 @@ public class LandmarkBase : StructureBase
         {
             if (building.TryGetComponent(out BuildingBase bScript))
             {
-                if (bScript.InRangeLankmarks.Contains(this))
-                    bScript.InRangeLankmarks.Remove(this);
+                bScript.RemoveLandmarkFromList(this);
             }
         }
     }

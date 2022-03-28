@@ -6,6 +6,7 @@ public class BuildingBase : StructureBase
 {
     public int Population;
     public List<LandmarkBase> InRangeLankmarks;
+    private LandmarkBase _landmark;
 
     public override void Placed()
     {
@@ -24,13 +25,24 @@ public class BuildingBase : StructureBase
 
     int FindPopulation(int oldPop)
     {
-        int newPop = oldPop;
-
-        foreach (LandmarkBase l in InRangeLankmarks)
+        int iterations = 0;
+        foreach (LandmarkBase landmark in InRangeLankmarks)
         {
-            newPop += l.Effect(oldPop);
+            if (iterations < 1) _landmark = landmark;
+            iterations++;
         }
 
+        if (!_landmark) return oldPop;
+
+        int newPop = _landmark.Effect(oldPop);
+
         return newPop;
+    }
+
+    public void RemoveLandmarkFromList(LandmarkBase lBase)
+    {
+        if (InRangeLankmarks.Contains(lBase)) InRangeLankmarks.Remove(lBase);
+
+        if (_landmark == lBase) _landmark = null;
     }
 }

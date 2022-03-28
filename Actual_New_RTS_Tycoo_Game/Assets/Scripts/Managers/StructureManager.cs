@@ -40,6 +40,7 @@ public class StructureManager : MonoBehaviour
 
                 Tile tile = hitStructure.OccupiedTile;
                 RemoveStructureFromTiles(hitStructure, tile);
+                UIManager.Instance.TriggerConstructionEvent();
             }
         }
     }
@@ -72,8 +73,14 @@ public class StructureManager : MonoBehaviour
 
         if (structure.TryGetComponent(out BuildingBase bScript))
             UIManager.Instance.UpdateBuildingPopulation.RemoveListener(bScript.SendPopulation);
+        else if (structure.TryGetComponent(out LandmarkBase lScript))
+        {
+            lScript.RemoveSelfFromNearbyBuildings();
+            UIManager.Instance.UpdateBuildingPopulation.RemoveListener(lScript.CopySelfOnNearbyBuildings);
+        }
+            
 
-        UIManager.Instance.TriggerConstructionEvent();
+        
         Destroy(structure.gameObject);
 
     }
@@ -114,6 +121,8 @@ public class StructureManager : MonoBehaviour
 
             if (spawnedStructure.TryGetComponent(out BuildingBase bScript))
                 UIManager.Instance.UpdateBuildingPopulation.AddListener(bScript.SendPopulation);
+            else if (spawnedStructure.TryGetComponent(out LandmarkBase lScript))
+                UIManager.Instance.UpdateBuildingPopulation.AddListener(lScript.CopySelfOnNearbyBuildings);
 
 
             //UIManager.Instance.SetPopulation(GetCurrentPopulation());
