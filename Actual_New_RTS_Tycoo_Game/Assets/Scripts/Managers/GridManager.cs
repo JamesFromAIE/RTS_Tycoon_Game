@@ -1,3 +1,4 @@
+using Random = System.Random;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,10 +37,28 @@ public class GridManager : MonoBehaviour
                 var hitPos = new Vector3Int(
                     (int)hit.transform.position.x, 0,
                     (int)hit.transform.position.z);
-                Tile tile = GetTileAtPosition(hitPos);
+                Tile tile = GetBuildableTileAtPosition(hitPos);
                 StructureManager.Instance.SpawnStructureOnTile(tile);
                 UIManager.Instance.TriggerConstructionEvent();
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Random rand = new Random();
+            var randomTile = _tiles.ElementAt(rand.Next(0, _tiles.Count)).Value;
+            while (randomTile.OccupiedStructure) randomTile = _tiles.ElementAt(rand.Next(0, _tiles.Count)).Value;
+
+            var bTile = (BuildableTile)randomTile;
+            var worker = WorkerManager.Instance.GetFirstWorker();
+            var wTile = (BuildableTile)worker.OccupiedTile;
+
+            var pathList = GetPathingList(wTile, bTile);
+            pathList.Reverse();
+
+            if (pathList != null) worker.MoveWorkerToTileList(FindPathingTilePositions(pathList));
+            else Debug.LogError("There is NO path in this list");
+
         }
     }
 
@@ -150,7 +169,7 @@ public class GridManager : MonoBehaviour
         var spawnedTile = Instantiate(_buildableTile, new Vector3(x, 0, z), Quaternion.identity);
         spawnedTile.name = $"Tile {x} {z}";
         
-        spawnedTile.Init(x, z);
+        //spawnedTile.Init(x, z);
 
         spawnedTile.transform.parent = transform;
 
@@ -163,11 +182,23 @@ public class GridManager : MonoBehaviour
         var spawnedTile = Instantiate(_staticTile, new Vector3(x, 0, z), Quaternion.identity);
         spawnedTile.name = $"Tile {x} {z}";
 
-        spawnedTile.Init(x, z);
+        //spawnedTile.Init(x, z);
 
         spawnedTile.transform.parent = transform;
 
         _staticTiles[new Vector3Int(x, 0, z)] = spawnedTile;
+    }
+
+    List<Vector3Int> FindPathingTilePositions(List<BuildableTile> tileList)
+    {
+        List<Vector3Int> vector3Ints = new List<Vector3Int>();
+
+        foreach (BuildableTile tile in tileList)
+        {
+            vector3Ints.Add(Helper.CastV3ToInt(tile.transform.position));
+        }
+
+        return vector3Ints;
     }
     #endregion
 
@@ -194,37 +225,13 @@ public class GridManager : MonoBehaviour
         }
         SpawnBorderStaticTiles(_width, _length);
 
-        //GameManager.Instance.ChangeState(GameManager.GameStates.GameStopped);
-    }
-
-    public Tile GetRandomStructureSpawnTile(Vector2[] dimensions)
-    {
-        bool isPlaceable = false;
-        Tile possibleTile = null;
-        while (!isPlaceable)
+        foreach (KeyValuePair<Vector3Int, Tile> tile in _tiles)
         {
-            //isPlaceable = true;
-            possibleTile = _tiles.Where(t => t.Value.Buildable/* &&*/).OrderBy(t => Random.value).First().Value;
-            for (int i = 0; i < dimensions.Length; i++)
-            {
-                var tilePos = Helper.XYToXZInt(dimensions[i]) + 
-                    new Vector3Int((int)possibleTile.transform.position.x,0, (int)possibleTile.transform.position.z);
-                var tile = GetTileAtPosition(tilePos);
-
-                if (tile == null || 
-                    tile.Buildable == false || 
-                    tile.OccupiedStructure != null)
-                {
-                    break;
-                }
-                else if (i == dimensions.Length - 1)
-                {
-                    isPlaceable = true;
-                }
-            }
+            tile.Value.Init((int)tile.Value.transform.position.x, (int)tile.Value.transform.position.z);
         }
 
-        return possibleTile;
+
+        //GameManager.Instance.ChangeState(GameManager.GameStates.GameStopped);
     }
 
     public bool IsTileBuildable(Tile spawnTile, Vector2[] dimensions)
@@ -235,7 +242,7 @@ public class GridManager : MonoBehaviour
         {
             var tilePos = Helper.XYToXZInt(dimensions[i]) +
                 new Vector3Int((int)spawnTile.transform.position.x, 0, (int)spawnTile.transform.position.z);
-            var tile = GetTileAtPosition(tilePos);
+            var tile = GetBuildableTileAtPosition(tilePos);
 
             if (tile == null ||
                 tile.Buildable == false ||
@@ -248,13 +255,30 @@ public class GridManager : MonoBehaviour
         return true;
     }
 
-    public Tile GetTileAtPosition(Vector3Int pos)
+    public void MoveWorkerToSpawnPoint(Worker worker, Vector3Int tilePos)
+    {
+        _tiles.TryGetValue(tilePos, out Tile tile);
+        if (!tile) return;
+
+        worker.transform.position = tile.transform.position + new Vector3(0.5f, 1, -0.5f);
+        worker.OccupiedTile = tile;
+    }
+
+    public Tile GetBuildableTileAtPosition(Vector3Int pos)
     {
         if(_tiles.TryGetValue(pos, out var tile))
         {
             return tile;
         }
         return null;
+    }
+
+    public Vector3Int GetRandomTilePosition()
+    {
+        Random rand = new Random();
+        var randomTile = _tiles.ElementAt(rand.Next(0, _tiles.Count)).Value;
+
+        return Helper.CastV3ToInt(randomTile.transform.position);
     }
 
     public Tile GetStaticTileAtPosition(Vector3Int pos)
@@ -266,5 +290,64 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
+    public List<BuildableTile> GetPathingList(BuildableTile startingTile, BuildableTile targetTile)
+    {
+        var toSearch = new List<BuildableTile>() { startingTile };
+        var processed = new List<BuildableTile>();
+
+        while (toSearch.Any())
+        {
+            var current = toSearch[0];
+            foreach (var t in toSearch)
+            {
+
+                if (t.F < current.F || t.F == current.F && t.H < current.H)
+                    current = t;
+            }
+
+            processed.Add(current);
+            toSearch.Remove(current);
+
+            if (current == targetTile)
+            {
+                int iterations = 0;
+                var currentPathTile = targetTile;
+                var path = new List<BuildableTile>();
+                while (currentPathTile != startingTile)
+                {
+                    path.Add(currentPathTile);
+                    currentPathTile = currentPathTile.Connection;
+                    iterations++;
+                    if (iterations > 100) return null;
+                }
+                
+                return path;
+            }
+
+            foreach (var neighbour in current.Neighbours.Where(t => !t.OccupiedStructure && !processed.Contains(t)))
+            {
+                var inSearch = toSearch.Contains(neighbour);
+
+                var costToNeighbour = current.G + current.GetMoveDistanceFromTile(neighbour);
+
+                if (!inSearch || costToNeighbour < neighbour.G)
+                {
+
+                    neighbour.SetG(costToNeighbour);
+                    neighbour.SetConnection(current);
+
+                    if (!inSearch)
+                    {
+                        neighbour.SetH(neighbour.GetMoveDistanceFromTile(targetTile));
+                        toSearch.Add(neighbour);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     #endregion
+
+
 }

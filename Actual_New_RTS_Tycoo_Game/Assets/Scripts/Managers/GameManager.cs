@@ -29,9 +29,10 @@ public class GameManager : MonoBehaviour
         switch(newState)
         {
             case GameStates.GenerateLevel:
-                Debug.Log("Generated Grid");
+                Debug.Log("Generated Level");
                 GridManager.Instance.GenerateGrid();
                 MoveCam.Instance.SetOrthoCamPosition();
+                WorkerManager.Instance.SpawnWorkers();
                 ChangeState(GameStates.GameResumed);
                 break;
             case GameStates.GameStopped:

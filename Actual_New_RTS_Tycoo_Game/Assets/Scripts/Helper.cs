@@ -4,6 +4,33 @@ using UnityEngine;
 
 public static class Helper 
 {
+
+    public static BuildableTile LowestFAndHCost(List<BuildableTile> tileList)
+    {
+        return null;
+    }
+    public static int Positive(int number)
+    {
+        return number < 0 ? number * -1 : number;
+    }
+
+    public static Vector3Int CastV3ToInt(Vector3 oldV3)
+    {
+        int v3X = (int)oldV3.x;
+        int v3Y = (int)oldV3.y;
+        int v3Z = (int)oldV3.z;
+
+        Vector3Int newV3 = new Vector3Int(v3X, v3Y, v3Z);
+
+        return newV3;
+    }
+
+
+    public static bool AreTheseTooClose(Vector3 v1, Vector3 v2, float distance)
+    {
+        if (v1.magnitude - v2.magnitude < distance) return true;
+        else return false;
+    }
     public static bool ContainBounds(this Bounds bounds, Bounds target)
     {
         return bounds.Contains(target.center);

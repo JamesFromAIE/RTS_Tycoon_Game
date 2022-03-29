@@ -35,7 +35,7 @@ public abstract class Tile : MonoBehaviour
         {
             var tilePos = Helper.XYToXZInt(dimensions[i]) +
                 new Vector3Int((int)structure.transform.position.x, 0, (int)structure.transform.position.z);
-            var tile = GridManager.Instance.GetTileAtPosition(tilePos);
+            var tile = GridManager.Instance.GetBuildableTileAtPosition(tilePos);
 
             tile.OccupiedStructure = structure;
         }

@@ -59,7 +59,7 @@ public class StructureManager : MonoBehaviour
         {
             var tilePos = Helper.XYToXZInt(dimensions[i]) +
                 new Vector3Int((int)tile.transform.position.x, 0, (int)tile.transform.position.z);
-            var occupiedTile = GridManager.Instance.GetTileAtPosition(tilePos);
+            var occupiedTile = GridManager.Instance.GetBuildableTileAtPosition(tilePos);
 
             occupiedTile.UnassignStructure();
         }

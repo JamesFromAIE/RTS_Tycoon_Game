@@ -15,6 +15,7 @@ MonoBehaviour:
   _renderer: {fileID: 734770154964386310}
   _isBuildable: 1
   OccupiedStructure: {fileID: 0}
+  PathingInfo: {fileID: 11400000, guid: 3eb1b56172f21f649a0866e55b8e1808, type: 2}
   _canBuildMat: {fileID: 2100000, guid: c7864617613a8b644814e7c96e3858ee, type: 2}
   _cantBuildMat: {fileID: 2100000, guid: 8625a1c3ac283164cbb0e2d3c67b4d5b, type: 2}
   _baseMaterial: {fileID: 2100000, guid: 904b94629d29c2843aba97b5e21bf859, type: 2}
