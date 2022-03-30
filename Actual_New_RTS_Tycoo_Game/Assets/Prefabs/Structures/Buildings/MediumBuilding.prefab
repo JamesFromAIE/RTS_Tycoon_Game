@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 4175128331668226731}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2, y: 0, z: 1.5}
-  m_LocalScale: {x: 5, y: 1, z: 4}
+  m_LocalScale: {x: 4, y: 1, z: 3}
   m_Children: []
   m_Father: {fileID: 6853532277286707831}
   m_RootOrder: 0
@@ -130,6 +130,7 @@ MonoBehaviour:
   XZDimensions: {x: 5, y: 4}
   StructureStats: {fileID: 11400000, guid: 61578cead54aae94fb556b8e9500ca57, type: 2}
   Population: 24
+  InRangeLankmarks: []
 --- !u!65 &512978074888035176
 BoxCollider:
   m_ObjectHideFlags: 0

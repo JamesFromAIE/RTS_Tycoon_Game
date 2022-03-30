@@ -49,6 +49,7 @@ MonoBehaviour:
   XZDimensions: {x: 2, y: 2}
   StructureStats: {fileID: 11400000, guid: e6ecb6196a1ac3d44aac5b6263940630, type: 2}
   Population: 8
+  InRangeLankmarks: []
 --- !u!65 &4620806225563204976
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -89,7 +90,7 @@ Transform:
   m_GameObject: {fileID: 6789390129662327227}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0, z: 0.5}
-  m_LocalScale: {x: 2, y: 1, z: 2}
+  m_LocalScale: {x: 1.5, y: 1, z: 1.5}
   m_Children: []
   m_Father: {fileID: 6789390129565232598}
   m_RootOrder: 0

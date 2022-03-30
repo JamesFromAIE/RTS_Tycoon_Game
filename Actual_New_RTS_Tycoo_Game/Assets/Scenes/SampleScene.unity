@@ -2428,8 +2428,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5da399bbab216ed42aa072f275bd7c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 6
-  _length: 6
+  _width: 10
+  _length: 10
   _outerThickness: 1
   _bufferList:
   - {x: 1, y: 3}

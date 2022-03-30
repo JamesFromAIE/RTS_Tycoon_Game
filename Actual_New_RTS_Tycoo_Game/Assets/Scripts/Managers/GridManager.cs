@@ -324,7 +324,7 @@ public class GridManager : MonoBehaviour
                 return path;
             }
 
-            foreach (var neighbour in current.Neighbours.Where(t => !t.OccupiedStructure && !processed.Contains(t)))
+            foreach (var neighbour in current.Neighbours.Where(t => t.IsWalkable && !processed.Contains(t)))
             {
                 var inSearch = toSearch.Contains(neighbour);
 

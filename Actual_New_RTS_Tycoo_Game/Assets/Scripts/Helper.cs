@@ -36,6 +36,35 @@ public static class Helper
         return bounds.Contains(target.center);
     }
 
+    public static bool IsTileWalkable(Vector2[] walkDimensions, Vector3Int coordinate, Vector3Int structurePos)
+    {
+        foreach (Vector2 v2 in walkDimensions)
+        {
+            var v3Int = Helper.XYToXZInt(v2) + structurePos;
+
+            if (coordinate == v3Int) return true;
+        }
+
+        return false;
+    }
+
+    public static Vector2[] GetWalkableCoordinates(Vector2Int dimensions)
+    {
+        List<Vector2> walkableList = new List<Vector2>();
+        for (int x = 0; x < dimensions.x; x++)
+        {
+            for (int z = 0; z < dimensions.y; z++)
+            {
+                var v2 = new Vector2(x, z);
+
+                if (z == 0 || x == dimensions.x - 1) walkableList.Add(v2);
+            }
+        }
+
+        var walkableArray = walkableList.ToArray();
+        return walkableArray;
+    }
+
     public static Vector2[] Vector2ToGridCoordinates(Vector2Int dimensions)
     {
         List<Vector2> coordinatesList = new List<Vector2>();

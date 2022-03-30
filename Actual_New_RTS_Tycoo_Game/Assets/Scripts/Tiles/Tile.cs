@@ -8,6 +8,7 @@ public abstract class Tile : MonoBehaviour
     [SerializeField] private bool _isBuildable;
 
     public StructureBase OccupiedStructure;
+    public bool IsWalkable = true;
     public bool Buildable => _isBuildable && OccupiedStructure == null;
 
     public virtual void Init(int x, int z)
@@ -31,13 +32,19 @@ public abstract class Tile : MonoBehaviour
         structure.OccupiedTile = this;
 
         var dimensions = Helper.Vector2ToGridCoordinates(structure.XZDimensions);
+        var walklableDimensions = Helper.GetWalkableCoordinates(structure.XZDimensions);
+        var structPos = new Vector3Int((int)structure.transform.position.x, 0, (int)structure.transform.position.z);
+
+
         for (int i = 0; i < dimensions.Length; i++)
         {
-            var tilePos = Helper.XYToXZInt(dimensions[i]) +
-                new Vector3Int((int)structure.transform.position.x, 0, (int)structure.transform.position.z);
+            var tilePos = Helper.XYToXZInt(dimensions[i]) + structPos;
+
             var tile = GridManager.Instance.GetBuildableTileAtPosition(tilePos);
 
             tile.OccupiedStructure = structure;
+            tile.IsWalkable = Helper.IsTileWalkable(walklableDimensions, tilePos, structPos);
+
         }
     }
 
