@@ -27,19 +27,21 @@ public class GridManager : MonoBehaviour
     void Update()
     {
         if (!GameManager.Instance.IsGameInThisState(GameManager.GameStates.GameResumed)) return;
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit, 100, _tileLayer))
             {
+                var structMan = StructureManager.Instance;
                 var hitPos = new Vector3Int(
                     (int)hit.transform.position.x, 0,
                     (int)hit.transform.position.z);
                 Tile tile = GetBuildableTileAtPosition(hitPos);
-                StructureManager.Instance.SpawnStructureOnTile(tile);
+                structMan.SpawnStructureOnTile(tile);
                 UIManager.Instance.TriggerConstructionEvent();
+                structMan.SetSelectedStructure(structMan._selectedStructure);
             }
         }
 
@@ -56,8 +58,12 @@ public class GridManager : MonoBehaviour
             var pathList = GetPathingList(wTile, bTile);
             pathList.Reverse();
 
-            if (pathList != null) worker.MoveWorkerToTileList(FindPathingTilePositions(pathList));
-            else Debug.LogError("There is NO path in this list");
+            if (pathList == null) Debug.LogError("There is NO path in this list");
+            else
+            {
+                pathList.Reverse();
+                worker.MoveWorkerToTileList(GridManager.Instance.FindPathingTilePositions(pathList));
+            }
 
         }
     }
@@ -189,7 +195,7 @@ public class GridManager : MonoBehaviour
         _staticTiles[new Vector3Int(x, 0, z)] = spawnedTile;
     }
 
-    List<Vector3Int> FindPathingTilePositions(List<BuildableTile> tileList)
+    public List<Vector3Int> FindPathingTilePositions(List<BuildableTile> tileList)
     {
         List<Vector3Int> vector3Ints = new List<Vector3Int>();
 
@@ -297,13 +303,7 @@ public class GridManager : MonoBehaviour
 
         while (toSearch.Any())
         {
-            var current = toSearch[0];
-            foreach (var t in toSearch)
-            {
-
-                if (t.F < current.F || t.F == current.F && t.H < current.H)
-                    current = t;
-            }
+            var current = GetLowestFCostTile(toSearch);
 
             processed.Add(current);
             toSearch.Remove(current);
@@ -345,6 +345,18 @@ public class GridManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public BuildableTile GetLowestFCostTile(List<BuildableTile> tileList)
+    {
+        var bTree = new BinaryTreeInt();
+
+        foreach (var tile in tileList)
+        {
+            bTree.Insert(tile);
+        }
+
+        return bTree.GetLowestTile();
     }
 
     #endregion

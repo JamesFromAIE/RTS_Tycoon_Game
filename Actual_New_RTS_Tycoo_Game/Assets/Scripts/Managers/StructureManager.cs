@@ -13,6 +13,7 @@ public class StructureManager : MonoBehaviour
     private Dictionary<Vector3, StructureBase> _currStructures;
 
     [SerializeField] LayerMask _structureLayer;
+    public bool IsPlacing { get; private set; } = false;
 
     void Awake()
     {
@@ -24,23 +25,48 @@ public class StructureManager : MonoBehaviour
     void Update()
     {
         if (!GameManager.Instance.IsGameInThisState(GameManager.GameStates.GameResumed)) return;
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButtonDown(1))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit, 100, _structureLayer))
             {
-                var offset = new Vector3(0, 0.5f, 0);
-                var hitPos = new Vector3(
-                    (int)hit.transform.position.x,
-                    (int)hit.transform.position.y,
-                    (int)hit.transform.position.z) + offset;
-                StructureBase hitStructure = GetStructureAtPosition(hitPos);
+                if (SelectedDictionary.Instance.SelectedTable.Count == 0)
+                {
+                    StructureBase hitStructure = GetStructureAtPosition(hit);
 
-                Tile tile = hitStructure.OccupiedTile;
-                RemoveStructureFromTiles(hitStructure, tile);
-                UIManager.Instance.TriggerConstructionEvent();
+                    Tile tile = hitStructure.OccupiedTile;
+                    RemoveStructureFromTiles(hitStructure, tile);
+                    UIManager.Instance.TriggerConstructionEvent();
+                }
+                else
+                {
+                    StructureBase hitStructure = GetStructureAtPosition(hit);
+
+                    var structureWorkTiles = hitStructure.WorkerTiles;
+                    var workers = SelectedDictionary.Instance.SelectedTable.Values.ToArray();
+
+                    for (int i = 0; i < workers.Length; i++)
+                    {
+                        var worker = workers[i];
+                        var wTile = (BuildableTile)worker.OccupiedTile;
+                        var bTile = (BuildableTile)structureWorkTiles[i % structureWorkTiles.Count];
+
+                        var pathList = GridManager.Instance.GetPathingList(wTile, bTile);
+
+
+                        if (pathList == null) Debug.LogError("There is NO path in this list");
+                        else
+                        {
+                            pathList.Reverse();
+                            worker.MoveWorkerToTileList(GridManager.Instance.FindPathingTilePositions(pathList));
+                        }
+                    }
+
+                    
+                }
+                
             }
         }
     }
@@ -112,12 +138,14 @@ public class StructureManager : MonoBehaviour
         {
             var spawnedStructure = Instantiate(structPrefab);
 
-            spawnedStructure.Placed();
-            spawnedStructure.Constructed(); // RELOCATE THIS ONCE 'CONSTRUCTION' IS IMPLEMENTED
+            
             UIManager.Instance.BuyStructure(sStats.GoldCost, sStats.StoneCost);
             tile.SetStructure(spawnedStructure);
 
             _currStructures[spawnedStructure.transform.position] = spawnedStructure;
+
+            spawnedStructure.Placed();
+            spawnedStructure.Constructed(); // RELOCATE THIS ONCE 'CONSTRUCTION' IS IMPLEMENTED
 
             if (spawnedStructure.TryGetComponent(out BuildingBase bScript))
                 UIManager.Instance.UpdateBuildingPopulation.AddListener(bScript.SendPopulation);
@@ -145,9 +173,35 @@ public class StructureManager : MonoBehaviour
         return null;
     }
 
+    public StructureBase GetStructureAtPosition(RaycastHit hit)
+    {
+        var offset = new Vector3(0, 0.5f, 0);
+        var hitPos = new Vector3(
+            (int)hit.transform.position.x,
+            (int)hit.transform.position.y,
+            (int)hit.transform.position.z) + offset;
+
+
+        if (_currStructures.TryGetValue(hitPos, out var tile))
+        {
+            return tile;
+        }
+        return null;
+    }
+
     public void SetSelectedStructure(StructureBase structure)
     {
-        _selectedStructure = structure;
+        if (_selectedStructure == structure)
+        {
+            _selectedStructure = null;
+            IsPlacing = false;
+        }
+        else
+        {
+            _selectedStructure = structure;
+            IsPlacing = true;
+        }
+        
     }
 
     #endregion

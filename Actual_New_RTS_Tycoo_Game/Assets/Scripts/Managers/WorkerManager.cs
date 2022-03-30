@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -16,6 +17,42 @@ public class WorkerManager : MonoBehaviour
     {
         Instance = this;
         _workers = new Dictionary<int, Worker>();
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            
+            if (Physics.Raycast(ray, out hit, 100, (1 << 6)) && 
+                SelectedDictionary.Instance.SelectedTable.Count > 0)
+            {
+                Debug.Log("Heard RMB on tile layer in " + this);
+                var hitPos = new Vector3Int(
+                    (int)hit.transform.position.x, 0,
+                    (int)hit.transform.position.z);
+                var bTile = (BuildableTile)GridManager.Instance.GetBuildableTileAtPosition(hitPos);
+                var workers = SelectedDictionary.Instance.SelectedTable.Values.ToArray();
+
+                for (int i = 0; i < workers.Length; i++)
+                {
+                    var worker = workers[i];
+                    var wTile = (BuildableTile)worker.OccupiedTile;
+
+                    var pathList = GridManager.Instance.GetPathingList(wTile, bTile);
+
+                    if (pathList == null) Debug.LogWarning("Path for generic Move Position messed up by another Move Position");
+                    else
+                    {
+                        pathList.Reverse();
+                        worker.MoveWorkerToTileList(GridManager.Instance.FindPathingTilePositions(pathList));
+                    }
+                }
+                
+            }
+        }
     }
 
     public void SpawnWorkers()

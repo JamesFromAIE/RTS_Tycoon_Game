@@ -7,6 +7,8 @@ public class Worker : MonoBehaviour
 {
     public Tile OccupiedTile;
     public float MoveSpeed;
+    [SerializeField] MeshRenderer _selectedCircle;
+    public bool IsSelected { get; private set; } = false;
 
     #region Public Methods
     public async void MoveWorkerToTileList(List<Vector3Int> tilePosList)
@@ -16,6 +18,12 @@ public class Worker : MonoBehaviour
             await MoveWorkerToTile(tilePos);
             OccupiedTile = GridManager.Instance.GetBuildableTileAtPosition(tilePos);
         }
+    }
+
+    public void WorkerSelected(bool condition)
+    {
+        IsSelected = condition;
+        _selectedCircle.enabled = condition;
     }
     #endregion
 

@@ -15,7 +15,11 @@ public class LandmarkBase : StructureBase
 
     public override void Placed()
     {
-
+        for (int i = 0; i < WorkerPoints.Count; i++)
+        {
+            var pos = Helper.CastV3ToInt(WorkerPoints[i].position);
+            WorkerTiles.Add(GridManager.Instance.GetBuildableTileAtPosition(pos));
+        }
     }
 
     public override void Constructed()

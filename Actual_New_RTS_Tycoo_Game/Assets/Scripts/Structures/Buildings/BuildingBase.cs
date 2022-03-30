@@ -10,7 +10,12 @@ public class BuildingBase : StructureBase
 
     public override void Placed()
     {
-
+        for (int i = 0; i < WorkerPoints.Count; i++)
+        {
+            var pos = Helper.CastV3ToInt(WorkerPoints[i].position);
+            var tile = GridManager.Instance.GetBuildableTileAtPosition(pos);
+            WorkerTiles.Add(tile);
+        }
     }
 
     public override void Constructed()

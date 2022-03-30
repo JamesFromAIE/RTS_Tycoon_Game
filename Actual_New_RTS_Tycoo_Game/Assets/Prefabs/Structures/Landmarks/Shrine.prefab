@@ -50,6 +50,7 @@ MonoBehaviour:
   OccupiedTile: {fileID: 0}
   XZDimensions: {x: 1, y: 1}
   StructureStats: {fileID: 11400000, guid: 44d1b8defcf10274299f4cc376df0692, type: 2}
+  WorkerPoints: []
   AoEDistance: 2
   BuildingLayer:
     serializedVersion: 2
@@ -129,7 +130,7 @@ GameObject:
   - component: {fileID: 5999898050503944355}
   - component: {fileID: 5603781856755751478}
   - component: {fileID: 6224144110342421960}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: AreaOfEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}

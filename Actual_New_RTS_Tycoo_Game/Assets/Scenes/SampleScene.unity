@@ -1288,7 +1288,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1011
   m_RenderingLayerMask: 1
   m_Lightmapping: 1
   m_LightShadowCasterMode: 0
@@ -2428,11 +2428,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5da399bbab216ed42aa072f275bd7c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 10
-  _length: 10
-  _outerThickness: 1
+  _width: 20
+  _length: 20
+  _outerThickness: 2
   _bufferList:
-  - {x: 1, y: 3}
+  - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
@@ -2600,6 +2600,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1957368573}
   - component: {fileID: 1957368572}
+  - component: {fileID: 1957368575}
+  - component: {fileID: 1957368574}
   m_Layer: 0
   m_Name: WorkerManager
   m_TagString: Untagged
@@ -2635,6 +2637,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1957368574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957368571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bca11c6c7323de84aa8656c6a908fc97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1957368575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957368571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a09a885a7e731354a8720860eb3ff31b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1970410137
 GameObject:
   m_ObjectHideFlags: 0

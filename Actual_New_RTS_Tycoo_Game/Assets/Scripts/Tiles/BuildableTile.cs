@@ -5,15 +5,15 @@ using UnityEngine;
 public class BuildableTile : Tile
 {
     public BuildableTile Connection { get; private set; }
-    public float G { get; private set; }
-    public float H { get; private set; }
-    public float F => G + H;
+    public int G { get; private set; }
+    public int H { get; private set; }
+    public int F => G + H;
 
     public void SetConnection(BuildableTile bTile) => Connection = bTile;
 
-    public void SetG(float g) => G = g;
+    public void SetG(int g) => G = g;
 
-    public void SetH(float h) => H = h;
+    public void SetH(int h) => H = h;
 
 
     public List<BuildableTile> Neighbours;
@@ -38,6 +38,8 @@ public class BuildableTile : Tile
         //if (!GameManager.Instance.IsGameInThisState(GameManager.GameStates.GameResumed)) return;
 
         _oldMat = _renderer.materials[0];
+
+        if (!StructureManager.Instance.IsPlacing) return;
 
         _renderer.SetFirstMaterial(_hoverMaterial);
 
@@ -76,6 +78,8 @@ public class BuildableTile : Tile
         //if (!GameManager.Instance.IsGameInThisState(GameManager.GameStates.GameResumed)) return;
 
         if (_highlightedStructure) Destroy(_highlightedStructure.gameObject);
+
+        //if (!StructureManager.Instance.IsPlacing) return;
 
         _renderer.SetFirstMaterial(_oldMat);
     }
