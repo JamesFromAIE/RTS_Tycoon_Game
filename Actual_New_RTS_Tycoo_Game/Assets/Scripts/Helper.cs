@@ -4,7 +4,10 @@ using UnityEngine;
 
 public static class Helper 
 {
-
+    public static Vector3 GetTileToWorkerPos(this Tile tile)
+    {
+        return tile.transform.position + new Vector3(0.5f, 1, -0.5f);
+    }
     public static BuildableTile LowestFAndHCost(List<BuildableTile> tileList)
     {
         return null;
@@ -14,7 +17,7 @@ public static class Helper
         return number < 0 ? number * -1 : number;
     }
 
-    public static Vector3Int CastV3ToInt(Vector3 oldV3)
+    public static Vector3Int CastV3ToInt(this Vector3 oldV3)
     {
         int v3X = (int)oldV3.x;
         int v3Y = (int)oldV3.y;

@@ -300,15 +300,17 @@ public class GridManager : MonoBehaviour
     {
         var toSearch = new List<BuildableTile>() { startingTile };
         var processed = new List<BuildableTile>();
+        var tree = new BinaryTreeInt();
 
         while (toSearch.Any())
         {
-            var current = GetLowestFCostTile(toSearch);
 
-            processed.Add(current);
-            toSearch.Remove(current);
+            var bestTile = GetLowestFCostTile(toSearch);
 
-            if (current == targetTile)
+            processed.Add(bestTile);
+            toSearch.Remove(bestTile);
+
+            if (bestTile == targetTile)
             {
                 int iterations = 0;
                 var currentPathTile = targetTile;
@@ -324,17 +326,17 @@ public class GridManager : MonoBehaviour
                 return path;
             }
 
-            foreach (var neighbour in current.Neighbours.Where(t => t.IsWalkable && !processed.Contains(t)))
+            foreach (var neighbour in bestTile.Neighbours.Where(t => t.IsWalkable && !processed.Contains(t)))
             {
                 var inSearch = toSearch.Contains(neighbour);
 
-                var costToNeighbour = current.G + current.GetMoveDistanceFromTile(neighbour);
+                var costToNeighbour = bestTile.G + bestTile.GetMoveDistanceFromTile(neighbour);
 
                 if (!inSearch || costToNeighbour < neighbour.G)
                 {
 
                     neighbour.SetG(costToNeighbour);
-                    neighbour.SetConnection(current);
+                    neighbour.SetConnection(bestTile);
 
                     if (!inSearch)
                     {

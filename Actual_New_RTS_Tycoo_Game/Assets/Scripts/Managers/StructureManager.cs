@@ -30,42 +30,14 @@ public class StructureManager : MonoBehaviour
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, 100, _structureLayer))
+            if (Physics.Raycast(ray, out hit, 100, _structureLayer) &&
+                SelectedDictionary.Instance.SelectedTable.Count == 0)
             {
-                if (SelectedDictionary.Instance.SelectedTable.Count == 0)
-                {
-                    StructureBase hitStructure = GetStructureAtPosition(hit);
+                StructureBase hitStructure = GetStructureAtPosition(hit);
 
-                    Tile tile = hitStructure.OccupiedTile;
-                    RemoveStructureFromTiles(hitStructure, tile);
-                    UIManager.Instance.TriggerConstructionEvent();
-                }
-                else
-                {
-                    StructureBase hitStructure = GetStructureAtPosition(hit);
-
-                    var structureWorkTiles = hitStructure.WorkerTiles;
-                    var workers = SelectedDictionary.Instance.SelectedTable.Values.ToArray();
-
-                    for (int i = 0; i < workers.Length; i++)
-                    {
-                        var worker = workers[i];
-                        var wTile = (BuildableTile)worker.OccupiedTile;
-                        var bTile = (BuildableTile)structureWorkTiles[i % structureWorkTiles.Count];
-
-                        var pathList = GridManager.Instance.GetPathingList(wTile, bTile);
-
-
-                        if (pathList == null) Debug.LogError("There is NO path in this list");
-                        else
-                        {
-                            pathList.Reverse();
-                            worker.MoveWorkerToTileList(GridManager.Instance.FindPathingTilePositions(pathList));
-                        }
-                    }
-
-                    
-                }
+                Tile tile = hitStructure.OccupiedTile;
+                RemoveStructureFromTiles(hitStructure, tile);
+                UIManager.Instance.TriggerConstructionEvent();
                 
             }
         }

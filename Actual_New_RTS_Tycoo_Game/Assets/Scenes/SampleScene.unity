@@ -2428,11 +2428,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5da399bbab216ed42aa072f275bd7c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 20
-  _length: 20
-  _outerThickness: 2
+  _width: 12
+  _length: 12
+  _outerThickness: 1
   _bufferList:
-  - {x: 0, y: 0}
+  - {x: 6, y: 6}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
@@ -2622,7 +2622,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _workerPrefab: {fileID: 1672186565611950739, guid: d8b91000f7bba214e8745b8c8039eb48, type: 3}
-  _startingWorkers: 1
+  _startingWorkers: 3
 --- !u!4 &1957368573
 Transform:
   m_ObjectHideFlags: 0
