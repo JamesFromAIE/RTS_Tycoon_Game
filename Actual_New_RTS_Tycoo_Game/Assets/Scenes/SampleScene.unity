@@ -1714,6 +1714,9 @@ MonoBehaviour:
   UpdateBuildingPopulation:
     m_PersistentCalls:
       m_Calls: []
+  UpdateCurrencyBalance:
+    m_PersistentCalls:
+      m_Calls: []
   _goldText: {fileID: 1970410139}
   _stoneText: {fileID: 655833568}
   _populationText: {fileID: 1676189499}
@@ -1992,7 +1995,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1015
 --- !u!114 &1307889694
 MonoBehaviour:
   m_ObjectHideFlags: 0

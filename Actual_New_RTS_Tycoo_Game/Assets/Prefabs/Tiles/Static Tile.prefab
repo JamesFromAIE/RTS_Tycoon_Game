@@ -15,6 +15,7 @@ MonoBehaviour:
   _renderer: {fileID: 8500141178775275634}
   _isBuildable: 0
   OccupiedStructure: {fileID: 0}
+  IsWalkable: 1
 --- !u!1001 &4837429542971266077
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -4,18 +4,23 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using TMPro;
+using Sirenix.OdinInspector;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
     [HideInInspector] public UnityEvent UpdateBuildingPopulation;
+    [HideInInspector] public UnityEvent UpdateCurrencyBalance;
     public GameManager.GameStates PrevState { get; private set; }
 
     [SerializeField] TMPro.TextMeshProUGUI _goldText, _stoneText, _populationText;
     [SerializeField] int _goldStart, _stoneStart, _populationStart;
+    [MinValue(0)]
     public int GoldBalance { get; private set; }
+    [MinValue(0)]
     public int StoneBalance { get; private set; }
+    [MinValue(0)]
     public int PopulationBalance { get; private set; }
 
     [SerializeField] List<GameObject> _uIElements;
@@ -24,6 +29,7 @@ public class UIManager : MonoBehaviour
     {
         Instance = this;
         UpdateBuildingPopulation = new UnityEvent();
+        //UpdateCurrencyBalance = new UnityEvent();
         _uIElements.ToggleUIElementVisibility(false);
         GoldBalance = _goldStart;
         StoneBalance = _stoneStart;

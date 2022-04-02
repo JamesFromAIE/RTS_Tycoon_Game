@@ -8,19 +8,32 @@ public class BuildingBase : StructureBase
     public List<LandmarkBase> InRangeLankmarks;
     private LandmarkBase _landmark;
 
+    void Update()
+    {
+        ConstructingStructure();
+    }
+
     public override void Placed()
     {
+        ConstructedMesh(isConstructed);
         for (int i = 0; i < WorkerPoints.Count; i++)
         {
             var pos = Helper.CastV3ToInt(WorkerPoints[i].position);
             var tile = GridManager.Instance.GetBuildableTileAtPosition(pos);
             WorkerTiles.Add(tile);
         }
+
+        workers = new List<Worker>();
+        _buildTime = StructureStats.BuildTime;
+        isConstructed = false;
     }
 
     public override void Constructed()
     {
-       
+        isConstructed = true;
+        workers.Clear();
+        
+        UIManager.Instance.TriggerConstructionEvent();
     }
 
     public void SendPopulation()

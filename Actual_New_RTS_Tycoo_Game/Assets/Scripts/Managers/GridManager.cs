@@ -3,15 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Sirenix.OdinInspector;
 
 public class GridManager : MonoBehaviour
 {
     public static GridManager Instance;
 
+    [MinValue(0)]
     [SerializeField] int _width, _length, _outerThickness;
     
     [SerializeField] List<Vector2Int> _bufferList;
 
+    [Required]
     [SerializeField] Tile _buildableTile, _staticTile;
     [SerializeField] LayerMask _tileLayer;
 
@@ -40,32 +43,11 @@ public class GridManager : MonoBehaviour
                     (int)hit.transform.position.z);
                 Tile tile = GetBuildableTileAtPosition(hitPos);
                 structMan.SpawnStructureOnTile(tile);
-                UIManager.Instance.TriggerConstructionEvent();
+                
                 structMan.SetSelectedStructure(structMan._selectedStructure);
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Random rand = new Random();
-            var randomTile = _tiles.ElementAt(rand.Next(0, _tiles.Count)).Value;
-            while (randomTile.OccupiedStructure) randomTile = _tiles.ElementAt(rand.Next(0, _tiles.Count)).Value;
-
-            var bTile = (BuildableTile)randomTile;
-            var worker = WorkerManager.Instance.GetFirstWorker();
-            var wTile = (BuildableTile)worker.OccupiedTile;
-
-            var pathList = GetPathingList(wTile, bTile);
-            pathList.Reverse();
-
-            if (pathList == null) Debug.LogError("There is NO path in this list");
-            else
-            {
-                pathList.Reverse();
-                worker.MoveWorkerToTileList(GridManager.Instance.FindPathingTilePositions(pathList));
-            }
-
-        }
     }
 
     

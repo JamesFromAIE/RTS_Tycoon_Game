@@ -91,6 +91,7 @@ public class StructureManager : MonoBehaviour
 
         var spawnedStructure = Instantiate(structPrefab);
         tile.SetEmptyStructure(spawnedStructure);
+        spawnedStructure.isEmpty = true;
 
         return spawnedStructure;
         
@@ -117,12 +118,12 @@ public class StructureManager : MonoBehaviour
             _currStructures[spawnedStructure.transform.position] = spawnedStructure;
 
             spawnedStructure.Placed();
-            spawnedStructure.Constructed(); // RELOCATE THIS ONCE 'CONSTRUCTION' IS IMPLEMENTED
+            
 
-            if (spawnedStructure.TryGetComponent(out BuildingBase bScript))
-                UIManager.Instance.UpdateBuildingPopulation.AddListener(bScript.SendPopulation);
-            else if (spawnedStructure.TryGetComponent(out LandmarkBase lScript))
-                UIManager.Instance.UpdateBuildingPopulation.AddListener(lScript.CopySelfOnNearbyBuildings);
+            //if (spawnedStructure.TryGetComponent(out BuildingBase bScript))
+            //    UIManager.Instance.UpdateBuildingPopulation.AddListener(bScript.SendPopulation);
+            //else if (spawnedStructure.TryGetComponent(out LandmarkBase lScript))
+            //    UIManager.Instance.UpdateBuildingPopulation.AddListener(lScript.CopySelfOnNearbyBuildings);
 
 
             //UIManager.Instance.SetPopulation(GetCurrentPopulation());

@@ -15,16 +15,24 @@ public class LandmarkBase : StructureBase
 
     public override void Placed()
     {
+        ConstructedMesh(isConstructed);
         for (int i = 0; i < WorkerPoints.Count; i++)
         {
             var pos = Helper.CastV3ToInt(WorkerPoints[i].position);
             WorkerTiles.Add(GridManager.Instance.GetBuildableTileAtPosition(pos));
         }
+
+        workers = new List<Worker>();
+        _buildTime = StructureStats.BuildTime;
+        isConstructed = false;
     }
 
     public override void Constructed()
     {
-        //CopySelfOnNearbyBuildings();
+        isConstructed = true;
+        workers.Clear();
+        
+        UIManager.Instance.TriggerConstructionEvent();
     }
 
     public void CopySelfOnNearbyBuildings()

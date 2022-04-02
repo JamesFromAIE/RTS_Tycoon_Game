@@ -3,10 +3,14 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Sirenix.OdinInspector;
 public class WorldClock : MonoBehaviour
 {
+    [MinValue(6)] [MaxValue(18)]
     [SerializeField] int _startingHour;
+    [MinValue(6)] [MaxValue(18)]
     [SerializeField] int _endingHour;
+    [MinValue(0)]
     [SerializeField] float _timeSpeed;
     TextMeshProUGUI _textClock;
     float _timeInMinutes;

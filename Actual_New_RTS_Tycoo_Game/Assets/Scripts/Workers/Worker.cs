@@ -12,16 +12,37 @@ public class Worker : MonoBehaviour
     [SerializeField] MeshRenderer _selectedCircle;
     public bool IsSelected { get; private set; } = false;
     public CancellationTokenSource TokenSource = null;
-    public Task beingCancelled;
-    public bool IsMoving = false;
-    
+    public StructureBase TargetStructure = null;
+
 
     #region Public Methods
+
+    public void ChangeWorkerState(WorkerManager.WorkerStates newState)
+    {
+        switch (newState)
+        {
+            case WorkerManager.WorkerStates.Stationary:
+                if (OccupiedTile.OccupiedStructure != null) ChangeWorkerState(WorkerManager.WorkerStates.Constructing);
+                break;
+            case WorkerManager.WorkerStates.Moving:
+                if (TargetStructure) TargetStructure.workers.Remove(this);
+                TargetStructure = null;
+                break;
+            case WorkerManager.WorkerStates.Constructing:
+                TargetStructure = OccupiedTile.OccupiedStructure;
+                TargetStructure.workers.Add(this);
+                break;
+            case WorkerManager.WorkerStates.Mining:
+                break;
+        }
+    }
+
     public async void MoveWorkerToTileList(List<Vector3Int> tilePosList)
     {
         TokenSource = new CancellationTokenSource();
         var token = TokenSource.Token;
         //IsMoving = true;
+        ChangeWorkerState(WorkerManager.WorkerStates.Moving);
 
         foreach(Vector3Int tilePos in tilePosList)
         {
@@ -36,7 +57,7 @@ public class Worker : MonoBehaviour
                 Debug.Log("CAUGHT IT");
                 TokenSource.Dispose();
                 TokenSource = null;
-                //IsMoving = false;
+                ChangeWorkerState(WorkerManager.WorkerStates.Stationary);
             }
             finally
             {
@@ -48,7 +69,7 @@ public class Worker : MonoBehaviour
 
         //TokenSource.Dispose();
         TokenSource = null;
-        IsMoving = false;
+        ChangeWorkerState(WorkerManager.WorkerStates.Stationary);
     }
 
     public void WorkerSelected(bool condition)

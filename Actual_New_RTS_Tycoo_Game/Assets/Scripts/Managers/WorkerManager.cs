@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class WorkerManager : MonoBehaviour
 {
     public static WorkerManager Instance;
 
     private Dictionary<int, Worker> _workers;
-
+    [Required]
     [SerializeField] Worker _workerPrefab;
     [SerializeField] int _startingWorkers;
 
@@ -21,6 +22,7 @@ public class WorkerManager : MonoBehaviour
 
     void Update()
     {
+        #region MouseButton Statements
         if (Input.GetMouseButtonDown(1))
         {
             RaycastHit hit;
@@ -31,6 +33,7 @@ public class WorkerManager : MonoBehaviour
                 SelectedDictionary.Instance.SelectedTable.Count > 0)
             {
                 StructureBase hitStructure = StructureManager.Instance.GetStructureAtPosition(hit);
+                if (hitStructure.isConstructed) return;
 
                 var structureWorkTiles = hitStructure.WorkerTiles;
                 var workers = SelectedDictionary.Instance.SelectedTable.Values.ToArray();
@@ -43,7 +46,6 @@ public class WorkerManager : MonoBehaviour
                     var bTile = (BuildableTile)structureWorkTiles[i % structureWorkTiles.Count];
 
                     var pathList = GridManager.Instance.GetPathingList(wTile, bTile);
-
 
                     if (pathList == null) Debug.LogError("There is NO path in this list");
                     else
@@ -81,6 +83,7 @@ public class WorkerManager : MonoBehaviour
             }
             
         }
+        #endregion
     }
 
     public void SpawnWorkers()
@@ -99,6 +102,14 @@ public class WorkerManager : MonoBehaviour
     {
         _workers.TryGetValue(0, out Worker value);
         return value;
+    }
+
+    public enum WorkerStates
+    {
+        Stationary = 0,
+        Moving = 1, 
+        Constructing = 2,
+        Mining = 3,
     }
 
 }
