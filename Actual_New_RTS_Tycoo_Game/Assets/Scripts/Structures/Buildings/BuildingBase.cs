@@ -19,7 +19,7 @@ public class BuildingBase : StructureBase
         for (int i = 0; i < WorkerPoints.Count; i++)
         {
             var pos = Helper.CastV3ToInt(WorkerPoints[i].position);
-            var tile = GridManager.Instance.GetBuildableTileAtPosition(pos);
+            var tile = GridManager.Instance.GetWalkableTileAtPosition(pos);
             WorkerTiles.Add(tile);
         }
 

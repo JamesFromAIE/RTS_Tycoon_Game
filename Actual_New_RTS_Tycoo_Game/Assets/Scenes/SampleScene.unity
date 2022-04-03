@@ -2435,12 +2435,18 @@ MonoBehaviour:
   _length: 12
   _outerThickness: 1
   _bufferList:
-  - {x: 6, y: 6}
+  - {x: 3, y: 3}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
+  _goldTileList:
+  - {x: 2, y: 2}
+  _stoneTileList:
+  - {x: 2, y: 3}
   _buildableTile: {fileID: -1255577245867215078, guid: e97c6f2da030d2f4d95221e58bcf4d80, type: 3}
   _staticTile: {fileID: 6109339843513069367, guid: a3dee4bf0b32040488827f71c26798e1, type: 3}
+  _goldTile: {fileID: 2731919743969828052, guid: 1cf4dba91a53c8640bccf92ccfbd435e, type: 3}
+  _stoneTile: {fileID: -6139373631203487126, guid: 3c57ba6f8c4959040927497e7df43c3e, type: 3}
   _tileLayer:
     serializedVersion: 2
     m_Bits: 64

@@ -139,6 +139,7 @@ MonoBehaviour:
   - {fileID: 8496755745197538640}
   _buildTime: 0
   workers: []
+  isEmpty: 0
   isConstructed: 0
   oldMesh: {fileID: 7255152392679229205}
   newMesh: {fileID: 4008508259591494227}

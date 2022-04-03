@@ -42,8 +42,8 @@ public class WorkerManager : MonoBehaviour
                 {
                     var worker = workers[i];
                     worker.TokenSource?.Cancel();
-                    var wTile = (BuildableTile)worker.OccupiedTile;
-                    var bTile = (BuildableTile)structureWorkTiles[i % structureWorkTiles.Count];
+                    var wTile = worker.OccupiedTile;
+                    var bTile = structureWorkTiles[i % structureWorkTiles.Count];
 
                     var pathList = GridManager.Instance.GetPathingList(wTile, bTile);
 
@@ -61,17 +61,18 @@ public class WorkerManager : MonoBehaviour
                 var hitPos = new Vector3Int(
                     (int)hit.transform.position.x, 0,
                     (int)hit.transform.position.z);
-                var bTile = (BuildableTile)GridManager.Instance.GetBuildableTileAtPosition(hitPos);
+                var tile = GridManager.Instance.GetWalkableTileAtPosition(hitPos);
+
                 var workers = SelectedDictionary.Instance.SelectedTable.Values.ToArray();
 
                 for (int i = 0; i < workers.Length; i++)
                 {
                     var worker = workers[i];
-                    worker.TokenSource?.Cancel();
-                    var wTile = (BuildableTile)worker.OccupiedTile;
+                     worker.TokenSource?.Cancel();
+                    var wTile = worker.OccupiedTile;
 
-                    var pathList = GridManager.Instance.GetPathingList(wTile, bTile);
-                    
+                   var pathList = GridManager.Instance.GetPathingList(wTile, tile);
+
 
                     if (pathList == null) Debug.LogWarning("Path for generic Move Position messed up by another Move Position");
                     else
@@ -81,8 +82,11 @@ public class WorkerManager : MonoBehaviour
                     }
                 }
             }
-            
+
+                
         }
+            
+        
         #endregion
     }
 
@@ -94,7 +98,7 @@ public class WorkerManager : MonoBehaviour
             _workers[i] = worker;
             var spawnPos = GridManager.Instance.GetRandomTilePosition();
             GridManager.Instance.MoveWorkerToSpawnPoint(worker, spawnPos);
-            
+            worker.transform.parent = transform;
         }
     }
 

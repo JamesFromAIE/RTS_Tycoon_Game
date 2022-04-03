@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6139373631203487126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4576474402905748858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64924239f4872994b9745c8879b7c3e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Neighbours: []
+  _renderer: {fileID: 2630695131920127151}
+  _isBuildable: 0
+  OccupiedStructure: {fileID: 0}
+  IsWalkable: 1
+  MinedResource: 1
+  WorkerList: []
+  MineMaxTimer: 4
+  MineTimer: 0
+  ResourceWorth: 15
+--- !u!1001 &1321395956203686080
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2783150951815816960, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3302384994654485946, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_Name
+      value: StoneTile
+      objectReference: {fileID: 0}
+    - target: {fileID: 3302384994654485946, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3950943129260678255, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e2fd6d187a61ef7468287aca8c560be1, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+--- !u!1 &4576474402905748858 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3302384994654485946, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+  m_PrefabInstance: {fileID: 1321395956203686080}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2630695131920127151 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3950943129260678255, guid: ef2de059b2e09ec4f9d355d0f7ae6ff6, type: 3}
+  m_PrefabInstance: {fileID: 1321395956203686080}
+  m_PrefabAsset: {fileID: 0}

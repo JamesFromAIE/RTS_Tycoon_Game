@@ -13,13 +13,16 @@ public class GridManager : MonoBehaviour
     [SerializeField] int _width, _length, _outerThickness;
     
     [SerializeField] List<Vector2Int> _bufferList;
+    [SerializeField] List<Vector2Int> _goldTileList;
+    [SerializeField] List<Vector2Int> _stoneTileList;
 
     [Required]
-    [SerializeField] Tile _buildableTile, _staticTile;
+    [SerializeField] Tile _buildableTile, _staticTile, _goldTile, _stoneTile;
     [SerializeField] LayerMask _tileLayer;
 
     private Dictionary<Vector3Int, Tile> _tiles;
     private Dictionary<Vector3Int, Tile> _staticTiles;
+    private Dictionary<Vector3Int, Tile> _mineableTiles;
     public List<Vector2Int> cornerTiles { get; private set; }
 
     void Awake()
@@ -41,7 +44,7 @@ public class GridManager : MonoBehaviour
                 var hitPos = new Vector3Int(
                     (int)hit.transform.position.x, 0,
                     (int)hit.transform.position.z);
-                Tile tile = GetBuildableTileAtPosition(hitPos);
+                Tile tile = GetWalkableTileAtPosition(hitPos);
                 structMan.SpawnStructureOnTile(tile);
                 
                 structMan.SetSelectedStructure(structMan._selectedStructure);
@@ -152,13 +155,36 @@ public class GridManager : MonoBehaviour
         else return false;
     }
 
+    bool CheckIfTileIsMineable(int x, int z, List<Vector2Int> goldTiles, List<Vector2Int> stoneTiles, out Resource resource)
+    {
+        var checkPos = new Vector2Int(x, z);
+        resource = Resource.Gold;
+
+        foreach (Vector2Int tilePos in goldTiles)
+        {
+            if (checkPos == tilePos)
+            {
+                return true;
+            }
+        }
+
+        foreach (Vector2Int tilePos in stoneTiles)
+        {
+            if (checkPos == tilePos)
+            {
+                resource = Resource.Stone;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     void SpawnBuildableTile(int x, int z)
     {
         var spawnedTile = Instantiate(_buildableTile, new Vector3(x, 0, z), Quaternion.identity);
         spawnedTile.name = $"Tile {x} {z}";
         
-        //spawnedTile.Init(x, z);
-
         spawnedTile.transform.parent = transform;
 
         _tiles[new Vector3Int(x, 0, z)] = spawnedTile;
@@ -170,24 +196,26 @@ public class GridManager : MonoBehaviour
         var spawnedTile = Instantiate(_staticTile, new Vector3(x, 0, z), Quaternion.identity);
         spawnedTile.name = $"Tile {x} {z}";
 
-        //spawnedTile.Init(x, z);
-
         spawnedTile.transform.parent = transform;
 
         _staticTiles[new Vector3Int(x, 0, z)] = spawnedTile;
     }
 
-    public List<Vector3Int> FindPathingTilePositions(List<BuildableTile> tileList)
+    void SpawnMineableTile(int x, int z, Resource resource)
     {
-        List<Vector3Int> vector3Ints = new List<Vector3Int>();
+        Tile chosenTile;
+        if (resource == Resource.Gold) chosenTile = _goldTile;
+        else chosenTile = _stoneTile;
 
-        foreach (BuildableTile tile in tileList)
-        {
-            vector3Ints.Add(Helper.CastV3ToInt(tile.transform.position));
-        }
+        var spawnedTile = Instantiate(chosenTile, new Vector3(x, 0, z), Quaternion.identity);
+        spawnedTile.name = $"Tile {x} {z}";
 
-        return vector3Ints;
+        spawnedTile.transform.parent = transform;
+
+        _mineableTiles[new Vector3Int(x, 0, z)] = spawnedTile;
     }
+
+    
     #endregion
 
     #region Public Methods
@@ -196,12 +224,18 @@ public class GridManager : MonoBehaviour
     {
         _tiles = new Dictionary<Vector3Int, Tile>();
         _staticTiles = new Dictionary<Vector3Int, Tile>();
+        _mineableTiles = new Dictionary<Vector3Int, Tile>();
         cornerTiles = new List<Vector2Int>();
         for (int x = 0; x < _width; x++)
         {
             for (int z = 0; z < _length; z++)
             {
-                if (CheckIfTileIsStatic(x, z, _bufferList))
+                if (CheckIfTileIsMineable(x, z, _goldTileList, _stoneTileList, out Resource resource))
+                {
+
+                    SpawnMineableTile(x, z, resource);
+                }
+                else if (CheckIfTileIsStatic(x, z, _bufferList))
                 {
                     SpawnStaticTile(x, z);
                 }
@@ -214,6 +248,10 @@ public class GridManager : MonoBehaviour
         SpawnBorderStaticTiles(_width, _length);
 
         foreach (KeyValuePair<Vector3Int, Tile> tile in _tiles)
+        {
+            tile.Value.Init((int)tile.Value.transform.position.x, (int)tile.Value.transform.position.z);
+        }
+        foreach (KeyValuePair<Vector3Int, Tile> tile in _mineableTiles)
         {
             tile.Value.Init((int)tile.Value.transform.position.x, (int)tile.Value.transform.position.z);
         }
@@ -230,7 +268,7 @@ public class GridManager : MonoBehaviour
         {
             var tilePos = Helper.XYToXZInt(dimensions[i]) +
                 new Vector3Int((int)spawnTile.transform.position.x, 0, (int)spawnTile.transform.position.z);
-            var tile = GetBuildableTileAtPosition(tilePos);
+            var tile = GetWalkableTileAtPosition(tilePos);
 
             if (tile == null ||
                 tile.Buildable == false ||
@@ -252,9 +290,31 @@ public class GridManager : MonoBehaviour
         worker.OccupiedTile = tile;
     }
 
-    public Tile GetBuildableTileAtPosition(Vector3Int pos)
+    public Tile GetWalkableTileAtPosition(Vector3Int pos)
     {
         if(_tiles.TryGetValue(pos, out var tile))
+        {
+            return tile;
+        }
+        if (_mineableTiles.TryGetValue(pos, out var mTile))
+        {
+            return mTile;
+        }
+        return null;
+    }
+
+    public Tile GetStaticTileAtPosition(Vector3Int pos)
+    {
+        if (_staticTiles.TryGetValue(pos, out var tile))
+        {
+            return tile;
+        }
+        return null;
+    }
+
+    public Tile GetMineableTileAtPosition(Vector3Int pos)
+    {
+        if (_mineableTiles.TryGetValue(pos, out var tile))
         {
             return tile;
         }
@@ -269,19 +329,10 @@ public class GridManager : MonoBehaviour
         return Helper.CastV3ToInt(randomTile.transform.position);
     }
 
-    public Tile GetStaticTileAtPosition(Vector3Int pos)
+    public List<Tile> GetPathingList(Tile startingTile, Tile targetTile)
     {
-        if (_staticTiles.TryGetValue(pos, out var tile))
-        {
-            return tile;
-        }
-        return null;
-    }
-
-    public List<BuildableTile> GetPathingList(BuildableTile startingTile, BuildableTile targetTile)
-    {
-        var toSearch = new List<BuildableTile>() { startingTile };
-        var processed = new List<BuildableTile>();
+        var toSearch = new List<Tile>() { startingTile };
+        var processed = new List<Tile>();
         var tree = new BinaryTreeInt();
 
         while (toSearch.Any())
@@ -296,7 +347,7 @@ public class GridManager : MonoBehaviour
             {
                 int iterations = 0;
                 var currentPathTile = targetTile;
-                var path = new List<BuildableTile>();
+                var path = new List<Tile>();
                 while (currentPathTile != startingTile)
                 {
                     path.Add(currentPathTile);
@@ -331,7 +382,7 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
-    public BuildableTile GetLowestFCostTile(List<BuildableTile> tileList)
+    public Tile GetLowestFCostTile(List<Tile> tileList)
     {
         var bTree = new BinaryTreeInt();
 
@@ -341,6 +392,18 @@ public class GridManager : MonoBehaviour
         }
 
         return bTree.GetLowestTile();
+    }
+
+    public List<Vector3Int> FindPathingTilePositions(List<Tile> tileList)
+    {
+        List<Vector3Int> vector3Ints = new List<Vector3Int>();
+
+        foreach (Tile tile in tileList)
+        {
+            vector3Ints.Add(Helper.CastV3ToInt(tile.transform.position));
+        }
+
+        return vector3Ints;
     }
 
     #endregion

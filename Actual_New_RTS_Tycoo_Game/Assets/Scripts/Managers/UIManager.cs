@@ -95,6 +95,18 @@ public class UIManager : MonoBehaviour
         //UpdateUIValues();
     }
 
+    public void GainGold (int value)
+    {
+        GoldBalance += value;
+        UpdateUIValues();
+    }
+
+    public void GainStone(int value)
+    {
+        StoneBalance += value;
+        UpdateUIValues();
+    }
+
     public void BuyStructure(int goldCost, int stoneCost)
     {
         GoldBalance -= goldCost;

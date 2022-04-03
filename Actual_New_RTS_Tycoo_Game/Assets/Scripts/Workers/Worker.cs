@@ -22,17 +22,26 @@ public class Worker : MonoBehaviour
         switch (newState)
         {
             case WorkerManager.WorkerStates.Stationary:
+                ChangeWorkerState(WorkerManager.WorkerStates.Mining);
                 if (OccupiedTile.OccupiedStructure != null) ChangeWorkerState(WorkerManager.WorkerStates.Constructing);
+                
                 break;
             case WorkerManager.WorkerStates.Moving:
                 if (TargetStructure) TargetStructure.workers.Remove(this);
-                TargetStructure = null;
+                    TargetStructure = null;
+                if (OccupiedTile.TryGetComponent(out MinableTile mTile)) if (mTile.WorkerList.Contains(this))
+                        mTile.WorkerList.Remove(this);
+                    
                 break;
+                
             case WorkerManager.WorkerStates.Constructing:
                 TargetStructure = OccupiedTile.OccupiedStructure;
                 TargetStructure.workers.Add(this);
                 break;
+                
             case WorkerManager.WorkerStates.Mining:
+                if (OccupiedTile.TryGetComponent(out MinableTile mineTile))
+                    mineTile.WorkerList.Add(this);
                 break;
         }
     }
@@ -50,7 +59,7 @@ public class Worker : MonoBehaviour
             try
             {
                 await MoveWorkerToTile(tilePos, token);
-                OccupiedTile = GridManager.Instance.GetBuildableTileAtPosition(tilePos);
+                OccupiedTile = GridManager.Instance.GetWalkableTileAtPosition(tilePos);
             }
             catch (OperationCanceledException ex)
             {

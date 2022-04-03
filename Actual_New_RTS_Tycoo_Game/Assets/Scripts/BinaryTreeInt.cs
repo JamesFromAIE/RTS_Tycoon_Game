@@ -10,7 +10,7 @@ public class BinaryTreeInt
         root = null;
     }
 
-    public void Insert(BuildableTile value)
+    public void Insert(Tile value)
     {
         NodeInt newNode = new NodeInt(value);
 
@@ -67,7 +67,7 @@ public class BinaryTreeInt
         }
     }
 
-    public BuildableTile GetLowestTile()
+    public Tile GetLowestTile()
     {
         NodeInt current = root;
 
@@ -84,11 +84,11 @@ public class BinaryTreeInt
 
 public class NodeInt
 {
-    public BuildableTile Data;
+    public Tile Data;
     public NodeInt Left;
     public NodeInt Right;
 
-    public NodeInt(BuildableTile data)
+    public NodeInt(Tile data)
     {
         Data = data;
         Left = null;

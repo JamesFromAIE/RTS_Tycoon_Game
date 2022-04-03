@@ -57,7 +57,7 @@ public class StructureManager : MonoBehaviour
         {
             var tilePos = Helper.XYToXZInt(dimensions[i]) +
                 new Vector3Int((int)tile.transform.position.x, 0, (int)tile.transform.position.z);
-            var occupiedTile = GridManager.Instance.GetBuildableTileAtPosition(tilePos);
+            var occupiedTile = GridManager.Instance.GetWalkableTileAtPosition(tilePos);
 
             occupiedTile.UnassignStructure();
         }
@@ -117,21 +117,13 @@ public class StructureManager : MonoBehaviour
 
             _currStructures[spawnedStructure.transform.position] = spawnedStructure;
 
+            spawnedStructure.transform.parent = transform;
+
             spawnedStructure.Placed();
-            
-
-            //if (spawnedStructure.TryGetComponent(out BuildingBase bScript))
-            //    UIManager.Instance.UpdateBuildingPopulation.AddListener(bScript.SendPopulation);
-            //else if (spawnedStructure.TryGetComponent(out LandmarkBase lScript))
-            //    UIManager.Instance.UpdateBuildingPopulation.AddListener(lScript.CopySelfOnNearbyBuildings);
-
-
-            //UIManager.Instance.SetPopulation(GetCurrentPopulation());
         }
         else
         {
-            //var structure = tile.OccupiedStructure;
-            //Debug.Log("Cannot Build Structure HERE!!!");
+
         }
         
     }

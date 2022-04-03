@@ -19,7 +19,7 @@ public class LandmarkBase : StructureBase
         for (int i = 0; i < WorkerPoints.Count; i++)
         {
             var pos = Helper.CastV3ToInt(WorkerPoints[i].position);
-            WorkerTiles.Add(GridManager.Instance.GetBuildableTileAtPosition(pos));
+            WorkerTiles.Add(GridManager.Instance.GetWalkableTileAtPosition(pos));
         }
 
         workers = new List<Worker>();
