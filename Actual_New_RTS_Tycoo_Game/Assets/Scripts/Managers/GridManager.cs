@@ -408,5 +408,29 @@ public class GridManager : MonoBehaviour
 
     #endregion
 
+    void OnDrawGizmos()
+    {
+        for (int x = 0; x < _width; x++)
+        {
+            for (int z = 0; z < _length; z++)
+            {
+                if (CheckIfTileIsMineable(x, z, _goldTileList, _stoneTileList, out Resource resource))
+                {
+                    Gizmos.color = Color.yellow;
+                    
+                }
+                else if (CheckIfTileIsStatic(x, z, _bufferList))
+                {
+                    Gizmos.color = Color.white;
+                }
+                else
+                {
+                    Gizmos.color = Color.green;
+                }
+                Gizmos.DrawWireCube(new Vector3(x, 0.5f, z), Vector3.one);
+            }
+        }
+    }
+
 
 }

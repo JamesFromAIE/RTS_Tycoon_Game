@@ -57,7 +57,6 @@ public class WorkerManager : MonoBehaviour
             }
             else if (Physics.Raycast(ray, out hit, 100, (1 << 6)))
             {
-                Debug.Log("Heard RMB on tile layer in " + this);
                 var hitPos = new Vector3Int(
                     (int)hit.transform.position.x, 0,
                     (int)hit.transform.position.z);
